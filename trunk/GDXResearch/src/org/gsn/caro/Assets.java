@@ -95,8 +95,7 @@ public class Assets {
 
 		music = Gdx.audio.newMusic(Gdx.files.internal("data/music.mp3"));
 		music.setLooping(true);
-		music.setVolume(0.5f);
-		if (Settings.soundEnabled) music.play();
+		music.setVolume(0.5f);		
 		jumpSound = Gdx.audio.newSound(Gdx.files.internal("data/jump.ogg"));
 		highJumpSound = Gdx.audio.newSound(Gdx.files.internal("data/highjump.ogg"));
 		hitSound = Gdx.audio.newSound(Gdx.files.internal("data/hit.ogg"));
@@ -105,6 +104,7 @@ public class Assets {
 	}
 
 	public static void playSound (Sound sound) {
-		if (Settings.soundEnabled) sound.play(1);
+		if (Settings.soundEnabled) 
+			sound.play(1);
 	}
 }
