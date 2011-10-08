@@ -10,8 +10,7 @@ public class GSNSpriteBatch extends SpriteBatch{
 	}	
 	@Override
 	public void begin() {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub		
 		super.begin();
 	}
 
