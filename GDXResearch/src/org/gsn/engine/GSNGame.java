@@ -1,14 +1,13 @@
-package org.gsn.caro;
+package org.gsn.engine;
 
 import com.badlogic.gdx.Game;
 
-public class CaroGame extends Game {
+public class GSNGame extends Game {
 
 	@Override
 	public void create() {
 		// TODO Auto-generated method stub
-		CaroAssets.load();
-		setScreen(new BoardScreen());
+
 	}
 
 }
