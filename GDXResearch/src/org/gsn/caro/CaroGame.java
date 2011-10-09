@@ -16,6 +16,14 @@ public class CaroGame extends Game {
 		this.app = app;		
 	}
 	
+	public CaroGame(){
+		
+	}
+	
+	public CaroGame(Application app){
+		setApp(app);
+	}
+	
 	@Override
 	public void create() {
 		// TODO Auto-generated method stub
