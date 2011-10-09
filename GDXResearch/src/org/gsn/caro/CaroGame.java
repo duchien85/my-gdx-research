@@ -7,9 +7,13 @@ import com.badlogic.gdx.Screen;
 
 public class CaroGame extends Game {
 	Application app;
+	final static int LOBBY = 0;
+	final static int BOARD = 1;
+	private LobyScreen lobbyScreen;
+	private BoardScreen boardScreen;
 	
 	public void setApp(Application app){
-		this.app = app;
+		this.app = app;		
 	}
 	
 	@Override
@@ -17,14 +21,31 @@ public class CaroGame extends Game {
 		// TODO Auto-generated method stub
 		
 		CaroAssets.load();
-		BoardScreen boardScreen = new BoardScreen();
-		setScreen(boardScreen, boardScreen);		
+		setScreen(LOBBY);
+		if (Settings.musicEnabled)
+			CaroAssets.music.play();
 	}
 
-	public void setScreen(Screen screen, InputProcessor input) {
+	private void setScreen(Screen screen, InputProcessor input) {
 		// TODO Auto-generated method stub
 		super.setScreen(screen);
 		this.app.getInput().setInputProcessor(input);
+	}
+	
+	public void setScreen(int id){
+		switch (id){
+		case LOBBY:
+			if (lobbyScreen == null)
+				lobbyScreen = new LobyScreen(this);
+			setScreen(lobbyScreen, lobbyScreen);
+			break;
+		case BOARD:
+			if (boardScreen == null)
+				boardScreen = new BoardScreen(this);
+			boardScreen.clearGame();
+			setScreen(boardScreen, boardScreen);
+			break;
+		}
 	}
 
 }

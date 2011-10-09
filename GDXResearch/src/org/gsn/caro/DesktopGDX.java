@@ -1,6 +1,5 @@
 package org.gsn.caro;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.backends.jogl.JoglApplication;
 
 public class DesktopGDX {

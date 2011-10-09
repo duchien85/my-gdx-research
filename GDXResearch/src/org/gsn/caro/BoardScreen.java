@@ -17,40 +17,49 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 
 public class BoardScreen extends InputAdapter implements Screen {
-	enum State {
-		IN_READY, IN_PLAY, IN_END,
+	private class EndEnimationTask extends TimerTask {
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			state = State.IN_READY;
+			logic.newGame(2);
+		}
 	}
 
-	Sprite board;
-	Sprite pieceX;
-	Sprite pieceO;
-	Sprite ready;
-	Sprite winSprite;
-	Sprite loseSprite;
+	enum State {
+		IN_END, IN_PLAY, IN_READY,
+	}
+
 	Sprite back;
-
-	Timer timer = new Timer();
-	boolean isWin;
-
-	State state;
-
-	final float kc_le = 15;
-	final float kc_o = 20;
-
+	Sprite board;
 	SpriteBatch globalBatcher;
-	SpriteBatch localBatcher;
-	CaroLogic logic;
+	Vector3 globalTouch = new Vector3();
 	OrthographicCamera guiCam;
-	final float WIDTH = Constant.WIDTH;
 	final float HEIGHT = Constant.HEIGHT;
 
-	Vector3 localTouch = new Vector3();
-	Vector3 globalTouch = new Vector3();
+	boolean isWin;
+	final float kc_le = 15;
 
-	public BoardScreen() {
-		logic = new CaroLogic();
-		logic.newGame(1);
-		state = State.IN_READY;
+	final float kc_o = 20;
+
+	SpriteBatch localBatcher;
+	Vector3 localTouch = new Vector3();
+
+	CaroLogic logic;
+	Sprite loseSprite;
+	Sprite pieceO;
+	Sprite pieceX;
+	Sprite ready;
+	State state;
+
+	Timer timer = new Timer();
+	final float WIDTH = Constant.WIDTH;
+
+	Sprite winSprite;
+	CaroGame game;
+
+	public BoardScreen(CaroGame game) {
+		this.game = game;
 
 		guiCam = new OrthographicCamera(WIDTH, HEIGHT);
 		guiCam.position.set(2000, 1000, 0);
@@ -73,7 +82,34 @@ public class BoardScreen extends InputAdapter implements Screen {
 		back.setPosition(WIDTH - back.getWidth(), HEIGHT - back.getHeight());
 		Debug.trace(back.getBoundingRectangle());
 	}
-	
+
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void hide() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public boolean keyDown(int keycode) {
+		// TODO Auto-generated method stub
+		// Debug.trace(character);
+		switch (keycode) {
+		case Input.Keys.F1:
+			win();
+			break;
+		case Input.Keys.F2:
+			lose();
+			break;
+		}
+		return true;
+	}
+
 	@Override
 	public boolean keyTyped(char character) {
 		// TODO Auto-generated method stub
@@ -81,46 +117,16 @@ public class BoardScreen extends InputAdapter implements Screen {
 		return true;
 	}
 
+	public void lose() {
+		state = State.IN_END;
+		isWin = false;
+		timer.schedule(new EndEnimationTask(), 2000);
+	}
+
 	@Override
-	public boolean touchDown(int x, int y, int pointer, int button) {
+	public void pause() {
 		// TODO Auto-generated method stub
 
-		localTouch.set(x, y, 0);
-
-		globalTouch.set(x, y, 0);
-
-		guiCam.unproject(globalTouch);
-		Debug.trace("GDX    : " + localTouch);
-		localTouch.set(x, HEIGHT - y, 0);
-		Debug.trace("local    : " + localTouch);
-		Debug.trace("global : " + globalTouch);
-		// toa do so voi ban co
-		if (Utility.pointInRectangle(back.getBoundingRectangle(), localTouch.x, localTouch.y)) {
-			Debug.trace("click Back");
-		}
-
-		switch (state) {
-		case IN_READY:
-			if (Utility.pointInRectangle(ready.getBoundingRectangle(), globalTouch.x, globalTouch.y)) {
-				Debug.trace("ready");
-				logic.newGame(1);
-				state = State.IN_PLAY;
-			}
-			break;
-		case IN_PLAY:
-			float fx = globalTouch.x - board.getX();
-			float fy = globalTouch.y - board.getY();
-
-			int row = (int) ((fx - kc_le) / kc_o);
-			int col = (int) ((fy - kc_le) / kc_o);
-			logic.chessMove(logic.getTurn(), row, col);
-			if (logic.getCount() >= 5)
-				win();
-			break;
-		case IN_END:
-			break;
-		}
-		return true;
 	}
 
 	@Override
@@ -132,6 +138,7 @@ public class BoardScreen extends InputAdapter implements Screen {
 		// local
 		localBatcher.begin();
 		back.draw(localBatcher);
+		CaroAssets.font.draw(localBatcher, "fps: " + Gdx.graphics.getFramesPerSecond(), 0, 20);
 		localBatcher.end();
 
 		// global
@@ -154,20 +161,6 @@ public class BoardScreen extends InputAdapter implements Screen {
 			break;
 		}
 		globalBatcher.end();
-	}
-
-	public void win() {
-		state = State.IN_END;
-		isWin = true;
-		timer.schedule(new TimerTask() {
-
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				state = State.IN_READY;
-				logic.newGame(2);
-			}
-		}, 2000);
 	}
 
 	private void renderBoard() {
@@ -198,33 +191,79 @@ public class BoardScreen extends InputAdapter implements Screen {
 	}
 
 	@Override
-	public void show() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void hide() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void resume() {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void dispose() {
+	public void show() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public boolean touchDown(int x, int y, int pointer, int button) {
+		// TODO Auto-generated method stub
+
+		localTouch.set(x, y, 0);
+
+		globalTouch.set(x, y, 0);
+
+		guiCam.unproject(globalTouch);
+		Debug.trace("GDX    : " + localTouch);
+		localTouch.set(x, HEIGHT - y, 0);
+//		Debug.trace("local    : " + localTouch);
+//		Debug.trace("global : " + globalTouch);
+		Debug.trace("pointer :" + pointer);
+		// toa do so voi ban co
+		if (Utility.pointInRectangle(back.getBoundingRectangle(), localTouch.x, localTouch.y)) {
+			Debug.trace("click Back");
+			game.setScreen(CaroGame.LOBBY);
+		}
+
+		switch (state) {
+		case IN_READY:
+			if (Utility.pointInRectangle(ready.getBoundingRectangle(), globalTouch.x, globalTouch.y)) {
+				Debug.trace("ready");
+				logic.newGame(1);
+				state = State.IN_PLAY;
+			}
+			break;
+		case IN_PLAY:
+			float fx = globalTouch.x - board.getX();
+			float fy = globalTouch.y - board.getY();
+
+			int row = (int) ((fx - kc_le) / kc_o);
+			int col = (int) ((fy - kc_le) / kc_o);
+			chessMove(logic.getTurn(), row, col);
+			break;
+		case IN_END:
+			break;
+		}
+		return true;
+	}
+
+	public boolean chessMove(int turn, int row, int col) {
+		if (logic.chessMove(turn, row, col)) {
+			CaroAssets.hitSound.play();
+			return true;
+		}
+		return false;
+
+	}
+
+	public void win() {
+		state = State.IN_END;
+		isWin = true;
+		timer.schedule(new EndEnimationTask(), 2000);
+	}
+
+	public void clearGame() {
+		// TODO Auto-generated method stub
+		logic = new CaroLogic();
+		logic.newGame(1);
+		state = State.IN_READY;
 	}
 
 }
