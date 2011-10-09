@@ -40,8 +40,8 @@ public class MainMenuScreen implements Screen {
 	Sprite castleSprite;
 	Animation bob = Assets.bobFall;
 	
-	final float WIDTH = Assets.WIDTH;
-	final float HEIGHT = Assets.HEIGHT;
+	final float WIDTH = Constant.WIDTH;
+	final float HEIGHT = Constant.HEIGHT;
 	
 	public MainMenuScreen (Game game) {
 		
