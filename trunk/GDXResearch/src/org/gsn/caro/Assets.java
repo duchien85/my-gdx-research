@@ -24,9 +24,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public class Assets {
-	public static final int WIDTH = 320;
-	public static final int HEIGHT = 480;
+public class Assets {	
 	public static Texture background;
 	public static TextureRegion backgroundRegion;
 

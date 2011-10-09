@@ -1,5 +1,6 @@
 package org.gsn.caro;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.backends.jogl.JoglApplication;
 
 public class DesktopGDX {
@@ -9,7 +10,9 @@ public class DesktopGDX {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		new JoglApplication(new CaroGame(), "Super Jumper", Assets.WIDTH, Assets.HEIGHT, false);
+		CaroGame game = new CaroGame();
+		JoglApplication app = new JoglApplication(game, "Super Jumper", Constant.WIDTH, Constant.HEIGHT, false);
+		game.setApp(app);
 	}
 
 }
