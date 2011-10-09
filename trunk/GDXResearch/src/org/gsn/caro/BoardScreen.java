@@ -57,10 +57,11 @@ public class BoardScreen extends InputAdapter implements Screen {
 
 	Sprite winSprite;
 	CaroGame game;
+	float rotationSpeed;
 
 	public BoardScreen(CaroGame game) {
 		this.game = game;
-
+		rotationSpeed = 0.5f;
 		guiCam = new OrthographicCamera(WIDTH, HEIGHT);
 		guiCam.position.set(2000, 1000, 0);
 		globalBatcher = new SpriteBatch();
@@ -106,14 +107,37 @@ public class BoardScreen extends InputAdapter implements Screen {
 		case Input.Keys.F2:
 			lose();
 			break;
-		}
-		return true;
-	}
 
-	@Override
-	public boolean keyTyped(char character) {
-		// TODO Auto-generated method stub
-		Debug.trace(character);
+		case Input.Keys.A:
+			guiCam.zoom += 0.02;
+		case Input.Keys.Q:
+			guiCam.zoom -= 0.02;
+			break;
+		case Input.Keys.LEFT:
+			//if (guiCam.position.x > 0)
+				guiCam.translate(-3, 0, 0);
+			break;
+		case Input.Keys.RIGHT:
+			//if (guiCam.position.x < 1024)
+				guiCam.translate(3, 0, 0);
+			break;
+
+		case Input.Keys.DOWN:
+			//if (guiCam.position.y > 0)
+				guiCam.translate(0, -3, 0);
+			break;
+
+		case Input.Keys.UP:
+			//if (guiCam.position.y < 1024)
+				guiCam.translate(0, 3, 0);
+			break;	
+		case Input.Keys.W:
+			guiCam.rotate(-rotationSpeed, 0, 0, 1);
+			break;
+		case Input.Keys.E:
+			guiCam.rotate(rotationSpeed, 0, 0, 1);
+			break;
+		}
 		return true;
 	}
 
@@ -213,8 +237,8 @@ public class BoardScreen extends InputAdapter implements Screen {
 		guiCam.unproject(globalTouch);
 		Debug.trace("GDX    : " + localTouch);
 		localTouch.set(x, HEIGHT - y, 0);
-//		Debug.trace("local    : " + localTouch);
-//		Debug.trace("global : " + globalTouch);
+		// Debug.trace("local    : " + localTouch);
+		// Debug.trace("global : " + globalTouch);
 		Debug.trace("pointer :" + pointer);
 		// toa do so voi ban co
 		if (Utility.pointInRectangle(back.getBoundingRectangle(), localTouch.x, localTouch.y)) {
