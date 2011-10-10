@@ -26,7 +26,7 @@ public class LobyScreen extends InputAdapter implements Screen {
 
 	public LobyScreen(CaroGame game) {
 		this.game = game;
-		background = new Sprite(CaroAssets.backgroundRegion);
+		background = CaroAssets.background;
 		background.setScale(WIDTH / background.getWidth(),
 				HEIGHT / background.getHeight());
 		Utility.setCenter(background, WIDTH / 2, HEIGHT / 2);
@@ -36,7 +36,7 @@ public class LobyScreen extends InputAdapter implements Screen {
 		localTouch = new Vector3();
 		globalBatcher = new SpriteBatch();
 		localBatcher = new SpriteBatch();
-		cuoc1G = new Sprite(CaroAssets.cuoc1G);
+		cuoc1G = CaroAssets.cuoc1G;
 		Utility.setCenter(cuoc1G, WIDTH / 2, HEIGHT / 2);
 		guiCam = new OrthographicCamera(WIDTH, HEIGHT);
 	}

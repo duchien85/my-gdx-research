@@ -1,10 +1,7 @@
 package org.gsn.caro;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Screen;
 
 public class CaroGame extends Game {
 	final static int LOBBY = 0;
@@ -15,11 +12,9 @@ public class CaroGame extends Game {
 	@Override
 	public void create() {
 		// TODO Auto-generated method stub
-		Assets.load();
-		PackerAssets.load();
 		CaroAssets.load();
 		setScreen(BOARD);
-		if (Settings.musicEnabled)
+		if (CaroSettings.musicEnabled)
 			CaroAssets.music.play();
 	}
 		

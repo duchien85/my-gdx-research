@@ -16,7 +16,7 @@
 
 package org.gsn.caro;
 
-public class Settings {
+public class CaroSettings {
 	public static boolean musicEnabled = false;
 	public static boolean soundEnabled = true;
 	public final static String file = ".superjumper";
