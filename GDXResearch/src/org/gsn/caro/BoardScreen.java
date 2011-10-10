@@ -32,8 +32,8 @@ public class BoardScreen extends InputAdapter implements Screen {
 	}
 
 	Sprite back;
-	Sprite board;	
-	
+	Sprite board;
+
 	SpriteBatch globalBatcher;
 	Vector3 globalTouch = new Vector3();
 	OrthographicCamera guiCam;
@@ -62,7 +62,7 @@ public class BoardScreen extends InputAdapter implements Screen {
 	CaroGame game;
 	float rotationSpeed;
 	public float time = 0;
-	
+
 	public BoardScreen(CaroGame game) {
 		this.game = game;
 		rotationSpeed = 0.5f;
@@ -70,16 +70,16 @@ public class BoardScreen extends InputAdapter implements Screen {
 		guiCam.position.set(0, 0, 0);
 		globalBatcher = new SpriteBatch();
 		localBatcher = new SpriteBatch();
-		
+
 		background = CaroAssets.background;
 		background.setScale(WIDTH / background.getWidth(), HEIGHT / background.getHeight());
 		Utility.setCenter(background, WIDTH / 2, HEIGHT / 2);
 
-		board = CaroAssets.board;		
+		board = CaroAssets.board;
 		// board.setPosition(2000 - 160, 2000 - 160);
 		Utility.setCenter(board, guiCam.position.x, guiCam.position.y);
 
-		pieceX =CaroAssets.pieceX;
+		pieceX = CaroAssets.pieceX;
 		pieceO = CaroAssets.pieceO;
 		ready = CaroAssets.ready;
 		Utility.moveToCenter(ready, board);
@@ -139,7 +139,7 @@ public class BoardScreen extends InputAdapter implements Screen {
 		case Input.Keys.UP:
 			if (guiCam.position.y < 10)
 				guiCam.translate(0, 3, 0);
-			break;	
+			break;
 		case Input.Keys.W:
 			guiCam.rotate(-rotationSpeed, 0, 0, 1);
 			break;
@@ -164,17 +164,17 @@ public class BoardScreen extends InputAdapter implements Screen {
 
 	@Override
 	public void render(float delta) {
-		//Debug.trace("delta: " + delta);
+		// Debug.trace("delta: " + delta);
 		time += delta;
 		GLCommon gl = Gdx.gl;
 		gl.glClearColor(0, 0, 0, 1);
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		guiCam.update();
-		// local		
+		// local
 		localBatcher.begin();
 		localBatcher.disableBlending();
 		background.draw(localBatcher);
-		localBatcher.end();				
+		localBatcher.end();
 
 		// global
 		globalBatcher.enableBlending();
@@ -196,11 +196,11 @@ public class BoardScreen extends InputAdapter implements Screen {
 			break;
 		}
 		globalBatcher.end();
-		
+
 		localBatcher.begin();
 		localBatcher.enableBlending();
 		back.draw(localBatcher);
-				
+
 		CaroAssets.font.draw(localBatcher, "fps: " + Gdx.graphics.getFramesPerSecond(), 0, 20);
 		localBatcher.end();
 	}
@@ -246,15 +246,14 @@ public class BoardScreen extends InputAdapter implements Screen {
 		Debug.trace("show");
 	}
 
-	
 	public boolean danh(int x, int y) {
 		// TODO Auto-generated method stub
 		localTouch.set(x, y, 0);
 		globalTouch.set(x, y, 0);
-		guiCam.unproject(globalTouch);		
+		guiCam.unproject(globalTouch);
 		localTouch.set(x, HEIGHT - y, 0);
 		Debug.trace("local    : " + localTouch);
-		// Debug.trace("global : " + globalTouch);		
+		// Debug.trace("global : " + globalTouch);
 		// toa do so voi ban co
 		if (Utility.pointInRectangle(back.getBoundingRectangle(), localTouch.x, localTouch.y)) {
 			Debug.trace("click Back");
@@ -304,22 +303,23 @@ public class BoardScreen extends InputAdapter implements Screen {
 		logic.newGame(1);
 		state = State.IN_READY;
 	}
-	
+
 	boolean dragged = false;
 	Vector3 oldTouch;
+
 	@Override
 	public boolean touchDragged(int x, int y, int pointer) {
 		// TODO Auto-generated method stub
 		Vector3 touch = new Vector3(x, HEIGHT - y, 0);
-		//guiCam.unproject(touch);
+		// guiCam.unproject(touch);
 		if (dragged)
-			translateCamera((- touch.x + oldTouch.x) / guiCam.zoom, (- touch.y + oldTouch.y) / guiCam.zoom);
+			translateCamera((-touch.x + oldTouch.x) / guiCam.zoom, (-touch.y + oldTouch.y) / guiCam.zoom);
 		oldTouch = touch;
 		dragged = true;
-		//Debug.trace("draged: " + touch);
+		// Debug.trace("draged: " + touch);
 		return true;
 	}
-	
+
 	@Override
 	public boolean touchUp(int x, int y, int pointer, int button) {
 		// TODO Auto-generated method stub
@@ -328,24 +328,24 @@ public class BoardScreen extends InputAdapter implements Screen {
 		dragged = false;
 		return true;
 	}
-	
+
 	final Rectangle cameraBound = new Rectangle(-300, -300, 600, 600);
 	final float MAX_ZOOM = 2;
 	final float MIN_ZOOM = 0.5f;
-	
-	public void translateCamera(float x, float y){
+
+	public void translateCamera(float x, float y) {
 		float nX = guiCam.position.x + x;
-		float nY = guiCam.position.y+ y;
-		if (Utility.pointInRectangle(cameraBound, nX, nY)){
-			//Debug.trace("new Camera : " + nX + " " + nY);
+		float nY = guiCam.position.y + y;
+		if (Utility.pointInRectangle(cameraBound, nX, nY)) {
+			// Debug.trace("new Camera : " + nX + " " + nY);
 			guiCam.translate(x, y, 0);
 		}
 	}
-	
-	public void zoomCamera(float zoom){
+
+	public void zoomCamera(float zoom) {
 		Debug.trace(" zoom : " + guiCam.zoom);
 		float nz = guiCam.zoom + zoom;
-		if (nz <= MAX_ZOOM && nz >= MIN_ZOOM){
+		if (nz <= MAX_ZOOM && nz >= MIN_ZOOM) {
 			guiCam.zoom += zoom;
 		}
 	}
