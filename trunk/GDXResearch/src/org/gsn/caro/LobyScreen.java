@@ -14,17 +14,25 @@ import com.badlogic.gdx.math.Vector3;
 
 public class LobyScreen extends InputAdapter implements Screen {
 	SpriteBatch globalBatcher;
-	SpriteBatch localBatcher;	
+	SpriteBatch localBatcher;
 	OrthographicCamera guiCam;
 	final float WIDTH = Constant.WIDTH;
 	final float HEIGHT = Constant.HEIGHT;
 	Vector3 localTouch;
-	Sprite all = new Sprite(CaroAssets.all);
-	
+	Sprite background;
+
 	Sprite cuoc1G;
 	CaroGame game;
-	public LobyScreen(CaroGame game){
+
+	public LobyScreen(CaroGame game) {
 		this.game = game;
+		background = new Sprite(CaroAssets.backgroundRegion);
+		background.setScale(WIDTH / background.getWidth(),
+				HEIGHT / background.getHeight());
+		Utility.setCenter(background, WIDTH / 2, HEIGHT / 2);
+		// background.setScale(0.5f);
+
+		// background.setPosition(0, 0);
 		localTouch = new Vector3();
 		globalBatcher = new SpriteBatch();
 		localBatcher = new SpriteBatch();
@@ -32,16 +40,19 @@ public class LobyScreen extends InputAdapter implements Screen {
 		Utility.setCenter(cuoc1G, WIDTH / 2, HEIGHT / 2);
 		guiCam = new OrthographicCamera(WIDTH, HEIGHT);
 	}
+
 	@Override
 	public boolean touchDown(int x, int y, int pointer, int button) {
 		// TODO Auto-generated method stub
-		Debug.trace("Pointer: " + pointer);
-		localTouch.set(x, HEIGHT - y , 0);
-		if (Utility.pointInRectangle(cuoc1G.getBoundingRectangle(), localTouch.x, localTouch.y)){
+		localTouch.set(x, HEIGHT - y, 0);
+		Debug.trace(localTouch.x + " " + localTouch.y);
+		if (Utility.pointInRectangle(cuoc1G.getBoundingRectangle(),
+				localTouch.x, localTouch.y)) {
 			game.setScreen(CaroGame.BOARD);
 		}
 		return true;
 	}
+
 	@Override
 	public void render(float delta) {
 		// TODO Auto-generated method stub
@@ -49,15 +60,15 @@ public class LobyScreen extends InputAdapter implements Screen {
 		gl.glClearColor(0, 0, 0, 1);
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		guiCam.update();
-		
-		
-		
+
 		localBatcher.begin();
 		localBatcher.disableBlending();
-		//all.draw(localBatcher);		
+		background.draw(localBatcher);
+
 		localBatcher.enableBlending();
 		cuoc1G.draw(localBatcher);
-		CaroAssets.font.draw(localBatcher, "fps: " + Gdx.graphics.getFramesPerSecond(), 0, 20);
+		CaroAssets.font.draw(localBatcher,
+				"fps: " + Gdx.graphics.getFramesPerSecond(), 0, 20);
 		localBatcher.end();
 	}
 

@@ -12,8 +12,11 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GLCommon;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
 public class BoardScreen extends InputAdapter implements Screen {
@@ -32,6 +35,8 @@ public class BoardScreen extends InputAdapter implements Screen {
 
 	Sprite back;
 	Sprite board;
+	Animation bob = Assets.bobJump;
+	
 	SpriteBatch globalBatcher;
 	Vector3 globalTouch = new Vector3();
 	OrthographicCamera guiCam;
@@ -51,6 +56,7 @@ public class BoardScreen extends InputAdapter implements Screen {
 	Sprite pieceX;
 	Sprite ready;
 	State state;
+	Sprite background;
 
 	Timer timer = new Timer();
 	final float WIDTH = Constant.WIDTH;
@@ -58,16 +64,21 @@ public class BoardScreen extends InputAdapter implements Screen {
 	Sprite winSprite;
 	CaroGame game;
 	float rotationSpeed;
-
+	public float time = 0;
+	
 	public BoardScreen(CaroGame game) {
 		this.game = game;
 		rotationSpeed = 0.5f;
 		guiCam = new OrthographicCamera(WIDTH, HEIGHT);
-		guiCam.position.set(2000, 1000, 0);
+		guiCam.position.set(0, 0, 0);
 		globalBatcher = new SpriteBatch();
 		localBatcher = new SpriteBatch();
+		
+		background = new Sprite(CaroAssets.backgroundRegion);
+		background.setScale(WIDTH / background.getWidth(), HEIGHT / background.getHeight());
+		Utility.setCenter(background, WIDTH / 2, HEIGHT / 2);
 
-		board = new Sprite(CaroAssets.board);
+		board = new Sprite(CaroAssets.board);		
 		// board.setPosition(2000 - 160, 2000 - 160);
 		Utility.setCenter(board, guiCam.position.x, guiCam.position.y);
 
@@ -109,26 +120,27 @@ public class BoardScreen extends InputAdapter implements Screen {
 			break;
 
 		case Input.Keys.A:
-			guiCam.zoom += 0.02;
+			zoomCamera(0.2f);
+			break;
 		case Input.Keys.Q:
-			guiCam.zoom -= 0.02;
+			zoomCamera(-0.2f);
 			break;
 		case Input.Keys.LEFT:
-			//if (guiCam.position.x > 0)
+			if (guiCam.position.x > -10)
 				guiCam.translate(-3, 0, 0);
 			break;
 		case Input.Keys.RIGHT:
-			//if (guiCam.position.x < 1024)
+			if (guiCam.position.x < 10)
 				guiCam.translate(3, 0, 0);
 			break;
 
 		case Input.Keys.DOWN:
-			//if (guiCam.position.y > 0)
+			if (guiCam.position.y > -10)
 				guiCam.translate(0, -3, 0);
 			break;
 
 		case Input.Keys.UP:
-			//if (guiCam.position.y < 1024)
+			if (guiCam.position.y < 10)
 				guiCam.translate(0, 3, 0);
 			break;	
 		case Input.Keys.W:
@@ -155,15 +167,18 @@ public class BoardScreen extends InputAdapter implements Screen {
 
 	@Override
 	public void render(float delta) {
+		//Debug.trace("delta: " + delta);
+		time += delta;
 		GLCommon gl = Gdx.gl;
 		gl.glClearColor(0, 0, 0, 1);
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		guiCam.update();
 		// local
+		TextureRegion currentFrame = bob.getKeyFrame(time, true);
 		localBatcher.begin();
-		back.draw(localBatcher);
-		CaroAssets.font.draw(localBatcher, "fps: " + Gdx.graphics.getFramesPerSecond(), 0, 20);
-		localBatcher.end();
+		localBatcher.disableBlending();
+		background.draw(localBatcher);
+		localBatcher.end();				
 
 		// global
 		globalBatcher.enableBlending();
@@ -185,6 +200,14 @@ public class BoardScreen extends InputAdapter implements Screen {
 			break;
 		}
 		globalBatcher.end();
+		
+		localBatcher.begin();
+		localBatcher.enableBlending();
+		back.draw(localBatcher);
+		
+		localBatcher.draw(currentFrame, 0, 0);
+		CaroAssets.font.draw(localBatcher, "fps: " + Gdx.graphics.getFramesPerSecond(), 0, 20);
+		localBatcher.end();
 	}
 
 	private void renderBoard() {
@@ -211,35 +234,32 @@ public class BoardScreen extends InputAdapter implements Screen {
 	@Override
 	public void resize(int width, int height) {
 		// TODO Auto-generated method stub
+		Debug.trace("resize");
 
 	}
 
 	@Override
 	public void resume() {
 		// TODO Auto-generated method stub
+		Debug.trace("resume");
 
 	}
 
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
-
+		Debug.trace("show");
 	}
 
-	@Override
-	public boolean touchDown(int x, int y, int pointer, int button) {
+	
+	public boolean danh(int x, int y) {
 		// TODO Auto-generated method stub
-
 		localTouch.set(x, y, 0);
-
 		globalTouch.set(x, y, 0);
-
-		guiCam.unproject(globalTouch);
-		Debug.trace("GDX    : " + localTouch);
+		guiCam.unproject(globalTouch);		
 		localTouch.set(x, HEIGHT - y, 0);
-		// Debug.trace("local    : " + localTouch);
-		// Debug.trace("global : " + globalTouch);
-		Debug.trace("pointer :" + pointer);
+		Debug.trace("local    : " + localTouch);
+		// Debug.trace("global : " + globalTouch);		
 		// toa do so voi ban co
 		if (Utility.pointInRectangle(back.getBoundingRectangle(), localTouch.x, localTouch.y)) {
 			Debug.trace("click Back");
@@ -289,5 +309,49 @@ public class BoardScreen extends InputAdapter implements Screen {
 		logic.newGame(1);
 		state = State.IN_READY;
 	}
-
+	
+	boolean dragged = false;
+	Vector3 oldTouch;
+	@Override
+	public boolean touchDragged(int x, int y, int pointer) {
+		// TODO Auto-generated method stub
+		Vector3 touch = new Vector3(x, HEIGHT - y, 0);
+		//guiCam.unproject(touch);
+		if (dragged)
+			translateCamera((- touch.x + oldTouch.x) / guiCam.zoom, (- touch.y + oldTouch.y) / guiCam.zoom);
+		oldTouch = touch;
+		dragged = true;
+		//Debug.trace("draged: " + touch);
+		return true;
+	}
+	
+	@Override
+	public boolean touchUp(int x, int y, int pointer, int button) {
+		// TODO Auto-generated method stub
+		if (!dragged)
+			danh(x, y);
+		dragged = false;
+		return true;
+	}
+	
+	final Rectangle cameraBound = new Rectangle(-300, -300, 600, 600);
+	final float MAX_ZOOM = 2;
+	final float MIN_ZOOM = 0.5f;
+	
+	public void translateCamera(float x, float y){
+		float nX = guiCam.position.x + x;
+		float nY = guiCam.position.y+ y;
+		if (Utility.pointInRectangle(cameraBound, nX, nY)){
+			//Debug.trace("new Camera : " + nX + " " + nY);
+			guiCam.translate(x, y, 0);
+		}
+	}
+	
+	public void zoomCamera(float zoom){
+		Debug.trace(" zoom : " + guiCam.zoom);
+		float nz = guiCam.zoom + zoom;
+		if (nz <= MAX_ZOOM && nz >= MIN_ZOOM){
+			guiCam.zoom += zoom;
+		}
+	}
 }
