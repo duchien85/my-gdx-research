@@ -1,0 +1,52 @@
+
+chon1.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+BG
+  rotate: false
+  xy: 2, 2
+  size: 480, 320
+  orig: 480, 320
+  offset: 0, 0
+  index: -1
+ready
+  rotate: false
+  xy: 2, 324
+  size: 268, 70
+  orig: 268, 71
+  offset: 0, 0
+  index: -1
+cuoc1G
+  rotate: false
+  xy: 272, 324
+  size: 100, 115
+  orig: 100, 115
+  offset: 0, 0
+  index: -1
+dauO
+  rotate: false
+  xy: 484, 2
+  size: 23, 23
+  orig: 23, 23
+  offset: 0, 0
+  index: -1
+dau X
+  rotate: false
+  xy: 484, 27
+  size: 22, 20
+  orig: 22, 20
+  offset: 0, 0
+  index: -1
+
+chon2.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+board
+  rotate: false
+  xy: 2, 2
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: -1
