@@ -12,10 +12,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GLCommon;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
@@ -34,8 +32,7 @@ public class BoardScreen extends InputAdapter implements Screen {
 	}
 
 	Sprite back;
-	Sprite board;
-	Animation bob = Assets.bobJump;
+	Sprite board;	
 	
 	SpriteBatch globalBatcher;
 	Vector3 globalTouch = new Vector3();
@@ -74,23 +71,23 @@ public class BoardScreen extends InputAdapter implements Screen {
 		globalBatcher = new SpriteBatch();
 		localBatcher = new SpriteBatch();
 		
-		background = new Sprite(CaroAssets.backgroundRegion);
+		background = CaroAssets.background;
 		background.setScale(WIDTH / background.getWidth(), HEIGHT / background.getHeight());
 		Utility.setCenter(background, WIDTH / 2, HEIGHT / 2);
 
-		board = new Sprite(CaroAssets.board);		
+		board = CaroAssets.board;		
 		// board.setPosition(2000 - 160, 2000 - 160);
 		Utility.setCenter(board, guiCam.position.x, guiCam.position.y);
 
-		pieceX = new Sprite(CaroAssets.pieceX);
-		pieceO = new Sprite(CaroAssets.pieceO);
-		ready = new Sprite(CaroAssets.ready);
+		pieceX =CaroAssets.pieceX;
+		pieceO = CaroAssets.pieceO;
+		ready = CaroAssets.ready;
 		Utility.moveToCenter(ready, board);
-		winSprite = new Sprite(CaroAssets.win);
+		winSprite = CaroAssets.win;
 		Utility.moveToCenter(winSprite, board);
 		loseSprite = new Sprite(CaroAssets.win);
 		Utility.moveToCenter(loseSprite, board);
-		back = new Sprite(CaroAssets.back);
+		back = CaroAssets.back;
 		back.setPosition(WIDTH - back.getWidth(), HEIGHT - back.getHeight());
 		Debug.trace(back.getBoundingRectangle());
 	}
@@ -173,8 +170,7 @@ public class BoardScreen extends InputAdapter implements Screen {
 		gl.glClearColor(0, 0, 0, 1);
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		guiCam.update();
-		// local
-		TextureRegion currentFrame = bob.getKeyFrame(time, true);
+		// local		
 		localBatcher.begin();
 		localBatcher.disableBlending();
 		background.draw(localBatcher);
@@ -204,8 +200,7 @@ public class BoardScreen extends InputAdapter implements Screen {
 		localBatcher.begin();
 		localBatcher.enableBlending();
 		back.draw(localBatcher);
-		
-		localBatcher.draw(currentFrame, 0, 0);
+				
 		CaroAssets.font.draw(localBatcher, "fps: " + Gdx.graphics.getFramesPerSecond(), 0, 20);
 		localBatcher.end();
 	}
