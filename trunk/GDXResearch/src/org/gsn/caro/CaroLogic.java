@@ -5,25 +5,26 @@ public class CaroLogic {
 	public final static int pX = 1;
 	public final static int pO = 2;
 	public final static int SIZE = 15;
-	
+
 	private int[][] board;
 	private int turn;
 	private int count;
-	public CaroLogic(){
-		//init();
+
+	public CaroLogic() {
+		// init();
 	}
-	
-	public void newGame(int first){
+
+	public void newGame(int first) {
 		board = new int[SIZE][SIZE];
 		turn = first;
 		count = 0;
 	}
-	
-	public int getTurn(){
+
+	public int getTurn() {
 		return turn;
 	}
-	
-	public boolean chessMove(int t, int x, int y){
+
+	public boolean chessMove(int t, int x, int y) {
 		if (t != turn)
 			return false;
 		if (x < 0 || x >= SIZE || y < 0 || y >= SIZE)
@@ -35,11 +36,12 @@ public class CaroLogic {
 		count++;
 		return true;
 	}
-	
-	public int getCell(int x, int y){
+
+	public int getCell(int x, int y) {
 		return board[x][y];
 	}
-	public int getCount(){
+
+	public int getCount() {
 		return count;
 	}
 }

@@ -8,7 +8,7 @@ public class CaroGame extends Game {
 	final static int BOARD = 1;
 	private LobyScreen lobbyScreen;
 	private BoardScreen boardScreen;
-	
+
 	@Override
 	public void create() {
 		// TODO Auto-generated method stub
@@ -17,9 +17,9 @@ public class CaroGame extends Game {
 		if (CaroSettings.musicEnabled)
 			CaroAssets.music.play();
 	}
-		
-	public void setScreen(int id){
-		switch (id){
+
+	public void setScreen(int id) {
+		switch (id) {
 		case LOBBY:
 			if (lobbyScreen == null)
 				lobbyScreen = new LobyScreen(this);

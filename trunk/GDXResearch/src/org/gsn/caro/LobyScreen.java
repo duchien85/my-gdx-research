@@ -27,8 +27,7 @@ public class LobyScreen extends InputAdapter implements Screen {
 	public LobyScreen(CaroGame game) {
 		this.game = game;
 		background = CaroAssets.background;
-		background.setScale(WIDTH / background.getWidth(),
-				HEIGHT / background.getHeight());
+		background.setScale(WIDTH / background.getWidth(), HEIGHT / background.getHeight());
 		Utility.setCenter(background, WIDTH / 2, HEIGHT / 2);
 		// background.setScale(0.5f);
 
@@ -46,8 +45,7 @@ public class LobyScreen extends InputAdapter implements Screen {
 		// TODO Auto-generated method stub
 		localTouch.set(x, HEIGHT - y, 0);
 		Debug.trace(localTouch.x + " " + localTouch.y);
-		if (Utility.pointInRectangle(cuoc1G.getBoundingRectangle(),
-				localTouch.x, localTouch.y)) {
+		if (Utility.pointInRectangle(cuoc1G.getBoundingRectangle(), localTouch.x, localTouch.y)) {
 			game.setScreen(CaroGame.BOARD);
 		}
 		return true;
@@ -67,8 +65,7 @@ public class LobyScreen extends InputAdapter implements Screen {
 
 		localBatcher.enableBlending();
 		cuoc1G.draw(localBatcher);
-		CaroAssets.font.draw(localBatcher,
-				"fps: " + Gdx.graphics.getFramesPerSecond(), 0, 20);
+		CaroAssets.font.draw(localBatcher, "fps: " + Gdx.graphics.getFramesPerSecond(), 0, 20);
 		localBatcher.end();
 	}
 
