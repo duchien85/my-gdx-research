@@ -26,8 +26,9 @@ public class CaroGame extends Game implements IMercuryListenter {
 			CaroAssets.music.play();
 		setScreen(BOARD);
 		client = new MercuryClient("120.138.65.104", 443);
-		client.connect();
-		client.waitConnect();
+//		client.connect();
+//		client.waitConnect();
+		client.addListener(this);
 
 		String s = "{\"params\":{\"username\":\"1F0189882EF93FC65236999C\"},\"_cmd\":\"login\",\"ext\":\"caro\"}";
 		client.write(s);
@@ -66,8 +67,10 @@ public class CaroGame extends Game implements IMercuryListenter {
 				}
 				return;
 			} else {
+				
 				String cmd = json.getString(org.gsn.packet.CmdDefine.CMD);
 				JSONObject params = json.getJSONObject(CmdDefine.PARAMS);
+				
 				if (cmd.equals(CmdDefine.GET_USER_INFO)) {
 					Debug.trace("GUI");
 					JSONObject me = params.getJSONObject("me");
