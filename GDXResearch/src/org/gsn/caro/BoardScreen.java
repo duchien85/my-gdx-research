@@ -26,14 +26,13 @@ public class BoardScreen extends InputAdapter implements Screen {
 			logic.newGame(2);
 		}
 	}
-
+	
 	enum State {
-		IN_END, IN_PLAY, IN_READY,
+		IN_READY, IN_WAITING, IN_PLAY, IN_END
 	}
-
+	
 	Sprite back;
 	Sprite board;
-
 	SpriteBatch globalBatcher;
 	Vector3 globalTouch = new Vector3();
 	OrthographicCamera guiCam;
@@ -54,6 +53,7 @@ public class BoardScreen extends InputAdapter implements Screen {
 	Sprite ready;
 	State state;
 	Sprite background;
+	Sprite waitOpponent;
 
 	Timer timer = new Timer();
 	final float WIDTH = Constant.WIDTH;
@@ -85,11 +85,13 @@ public class BoardScreen extends InputAdapter implements Screen {
 		Utility.moveToCenter(ready, board);
 		winSprite = CaroAssets.win;
 		Utility.moveToCenter(winSprite, board);
-		loseSprite = new Sprite(CaroAssets.win);
+		loseSprite = CaroAssets.lose;
 		Utility.moveToCenter(loseSprite, board);
 		back = CaroAssets.back;
 		back.setPosition(WIDTH - back.getWidth(), HEIGHT - back.getHeight());
-		Debug.trace(back.getBoundingRectangle());
+		//Debug.trace(back.getBoundingRectangle());
+		waitOpponent = CaroAssets.waitOpponent;
+		Utility.moveToCenter(waitOpponent, board);
 	}
 
 	@Override
@@ -103,6 +105,12 @@ public class BoardScreen extends InputAdapter implements Screen {
 		// TODO Auto-generated method stub
 
 	}
+	
+	public void startgame(){
+		Debug.trace("startGame");
+		logic.newGame(1);
+		state = State.IN_PLAY;	
+	}
 
 	@Override
 	public boolean keyDown(int keycode) {
@@ -115,7 +123,11 @@ public class BoardScreen extends InputAdapter implements Screen {
 		case Input.Keys.F2:
 			lose();
 			break;
-
+			
+		case Input.Keys.F3:
+			startgame();
+			break;
+			
 		case Input.Keys.A:
 			zoomCamera(0.2f);
 			break;
@@ -185,6 +197,9 @@ public class BoardScreen extends InputAdapter implements Screen {
 		switch (state) {
 		case IN_READY:
 			ready.draw(globalBatcher);
+			break;
+		case IN_WAITING:
+			waitOpponent.draw(globalBatcher);
 			break;
 		case IN_PLAY:
 			break;
@@ -263,9 +278,7 @@ public class BoardScreen extends InputAdapter implements Screen {
 		switch (state) {
 		case IN_READY:
 			if (Utility.pointInRectangle(ready.getBoundingRectangle(), globalTouch.x, globalTouch.y)) {
-				Debug.trace("ready");
-				logic.newGame(1);
-				state = State.IN_PLAY;
+				state = State.IN_WAITING;
 			}
 			break;
 		case IN_PLAY:

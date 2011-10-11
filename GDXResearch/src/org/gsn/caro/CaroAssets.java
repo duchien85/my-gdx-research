@@ -25,7 +25,7 @@ public class CaroAssets {
 	public static Sprite back;
 	public static Sprite cuoc1G;
 	public static Sprite background;
-
+	public static Sprite waitOpponent;
 	public static Music music;
 	public static Sound hitSound;
 
@@ -35,7 +35,7 @@ public class CaroAssets {
 	public static void load() {
 		// texture
 		background = atlas.createSprite("background");
-		cuoc1G = atlas.createSprite("win");
+		cuoc1G = atlas.createSprite("cuoc1G");
 		board = atlas.createSprite("board");
 		pieceO = atlas.createSprite("dauO");
 		pieceX = atlas.createSprite("dauX");
@@ -43,6 +43,7 @@ public class CaroAssets {
 		win = atlas.createSprite("win");
 		lose = atlas.createSprite("lose");
 		back = atlas.createSprite("back");
+		waitOpponent = atlas.createSprite("waitOpponent");
 		// music
 		music = Gdx.audio.newMusic(Gdx.files.internal("mdx/music.mp3"));
 		music.setLooping(true);
