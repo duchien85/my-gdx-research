@@ -1,15 +1,12 @@
 package org.gsn.engine;
 
-import org.gsn.caro.CaroAssets;
-
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
-public abstract class CombineSprite {
+public abstract class CustomSprite {
 	 protected float x;
 	 protected float y;	 
-	 protected Rectangle rectBound;	
+	 protected Rectangle rectBound = new Rectangle();	
 
 	 public void setPosition(float x, float y){
 		 this.x = x;
@@ -33,6 +30,17 @@ public abstract class CombineSprite {
 	 public float getY(){
 		 return y;
 	 }
+	 	 
 	 
-	 abstract public void draw(SpriteBatch batcher);	 
+	 abstract public void draw(SpriteBatch batcher);
+
+	public float getWidth() {
+		// TODO Auto-generated method stub
+		return rectBound.getWidth();
+	}
+
+	public float getHeight() {
+		// TODO Auto-generated method stub
+		return rectBound.getHeight();
+	}	 
 }

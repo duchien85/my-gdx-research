@@ -1,6 +1,7 @@
 package org.gsn.caro;
 
 import org.gsn.engine.Debug;
+import org.gsn.engine.Utility;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
