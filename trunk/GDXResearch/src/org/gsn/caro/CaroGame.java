@@ -29,6 +29,7 @@ public class CaroGame extends Game implements IMercuryListenter {
 //		client.connect();
 //		client.waitConnect();
 		client.addListener(this);
+		client.addListener(this);
 
 		String s = "{\"params\":{\"username\":\"1F0189882EF93FC65236999C\"},\"_cmd\":\"login\",\"ext\":\"caro\"}";
 		client.write(s);
