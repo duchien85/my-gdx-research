@@ -32,35 +32,37 @@ public class MenuSpirte extends CombineSprite {
 		itemList = new ArrayList<String>(items);
 		this.width = width;
 		recList = new ArrayList<Rectangle>();
+		rectBound = new Rectangle(0, 0, width, items.size() * font.getLineHeight());
 	}
 
 	public MenuSpirte(BitmapFont font, float width, List<String> items) {
-		init(font, items, width);			
+		init(font, items, width);
 	}
+
 	private List<Rectangle> recList;
+
 	@Override
 	public void draw(SpriteBatch batcher) {
 		// TODO Auto-generated method stub
 		int count = 0;
 		for (int i = itemList.size() - 1; i >= 0; i--) {
 			String text = itemList.get(i);
-			// Debug.trace("text : " + text);
+			//Debug.trace("text : " + text);
 			float tx, ty;
 			tx = x;
-			ty = y + font.getLineHeight() * count;
-			TextBounds bounds = font.drawWrapped(batcher, text, tx, ty , width, HAlignment.CENTER);			
+			ty = y + font.getLineHeight() * (count + 1);
+			TextBounds bounds = font.drawWrapped(batcher, text, tx, ty, width, HAlignment.CENTER);
 			// Debug.trace("bound : " + tx + " " + ty + " " + bounds.width + " "
 			// + bounds.height);
 			count++;
 		}
 
 	}
-	
+
 	@Override
 	public void touchDown(float localX, float localY) {
 		// TODO Auto-generated method stub
-		int index = (int) (localY / font.getLineHeight());
+		int index =  itemList.size() - 1 - (int) (localY / font.getLineHeight());
 		Debug.trace(index);
-	}
-
+	}			
 }

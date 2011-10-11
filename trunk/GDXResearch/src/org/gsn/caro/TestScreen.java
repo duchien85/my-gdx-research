@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
@@ -14,11 +15,12 @@ public class TestScreen extends InputAdapter implements Screen {
 	SpriteBatch batcher = new SpriteBatch();	
 	float time = 0;
 	MenuSpirte menu ;
-	
+	Sprite moc = new Sprite(CaroAssets.pieceX);
 	public TestScreen() {
 		// TODO Auto-generated constructor stub
 		menu = new MenuSpirte(CaroAssets.font, 300, "play", "music", "pause");
-		menu.setPos(100, 100);
+		menu.setPosition(300, 300);
+		moc.setPosition(300, 300);
 	}
 	
 	@Override
@@ -27,6 +29,7 @@ public class TestScreen extends InputAdapter implements Screen {
 		time += delta;
 		batcher.begin();		
 		menu.draw(batcher);	
+		moc.draw(batcher);
 		batcher.end();
 
 	}

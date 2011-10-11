@@ -1,19 +1,22 @@
 package org.gsn.engine;
 
-import com.badlogic.gdx.graphics.Camera;
+import org.gsn.caro.CaroAssets;
+
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 
 public abstract class CombineSprite {
 	 protected float x;
 	 protected float y;	 
-	 protected Rectangle rectBound;
+	 protected Rectangle rectBound;	
 
-	 public void setPos(float x, float y){
+	 public void setPosition(float x, float y){
 		 this.x = x;
 		 this.y = y;
-	 }	 
+		 rectBound.setX(x);
+		 rectBound.setY(y);
+	 }
 	 
 	 public void touchDown(float localX, float localY){
 		 
