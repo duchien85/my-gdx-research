@@ -3,21 +3,21 @@ package org.gsn.packet;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public  class PacketFactory {
-	private static JSONObject create(){
+public class PacketFactory {
+	private static JSONObject create() {
 		JSONObject json = new JSONObject();
 		try {
-			json.put("ext", "caro");			
+			json.put("ext", "caro");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
-		
+		}
+
 		return json;
 	}
-	
-	public static JSONObject createQuickPlay(int betLv){
-		//100, 500, 5000
+
+	public static JSONObject createQuickPlay(int betLv) {
+		// 100, 500, 5000
 		try {
 			JSONObject json = create().put(CmdDefine.CMD, CmdDefine.INSTANCE_PLAY);
 			JSONObject params = new JSONObject().put("active", true);
@@ -29,10 +29,10 @@ public  class PacketFactory {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
-		}				
+		}
 	}
-	
-	public static JSONObject createReady(){
+
+	public static JSONObject createReady() {
 		try {
 			return create().put(CmdDefine.CMD, CmdDefine.GAME_READY);
 		} catch (JSONException e) {
@@ -41,8 +41,8 @@ public  class PacketFactory {
 		}
 		return null;
 	}
-	
-	public static JSONObject createMove(int turn, int cell){
+
+	public static JSONObject createMove(int turn, int cell) {
 		JSONObject json = create();
 		JSONObject params = new JSONObject();
 		try {
@@ -56,14 +56,14 @@ public  class PacketFactory {
 		}
 		return json;
 	}
-	
-	public static JSONObject createOutRoom(){
+
+	public static JSONObject createOutRoom() {
 		try {
 			return create().put(CmdDefine.CMD, CmdDefine.OUT_ROOM);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
-		}	
+		}
 	}
 }

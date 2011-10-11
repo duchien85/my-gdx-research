@@ -13,26 +13,31 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 
 public class CaroGame extends Game implements IMercuryListenter {
+	final static int TEST = -1;
 	final static int LOBBY = 0;
 	final static int BOARD = 1;
 	private LobyScreen lobbyScreen;
 	private BoardScreen boardScreen;
+	private TestScreen testScreen;
 	MercuryClient client;
 
 	@Override
 	public void create() {
 		CaroAssets.load();
-		if (CaroSettings.musicEnabled)
-			CaroAssets.music.play();
-		setScreen(BOARD);
-		client = new MercuryClient("120.138.65.104", 443);
-//		client.connect();
-//		client.waitConnect();
-		client.addListener(this);
-		client.addListener(this);
-
-		String s = "{\"params\":{\"username\":\"1F0189882EF93FC65236999C\"},\"_cmd\":\"login\",\"ext\":\"caro\"}";
-		client.write(s);
+		setScreen(TEST);
+		//connect();
+	}
+	
+	private void connect(){
+		 client = new MercuryClient("120.138.65.104", 443);
+		 client.connect();
+		 client.waitConnect();
+		 client.addListener(this);
+		 client.addListener(this);
+		
+		 String s =
+		 "{\"params\":{\"username\":\"1F0189882EF93FC65236999C\"},\"_cmd\":\"login\",\"ext\":\"caro\"}";
+		 client.write(s);
 	}
 
 	public void setScreen(int id) {
@@ -49,6 +54,12 @@ public class CaroGame extends Game implements IMercuryListenter {
 			boardScreen.clearGame();
 			setScreen(boardScreen);
 			Gdx.input.setInputProcessor(boardScreen);
+			break;
+		case TEST:
+			if (testScreen == null)
+				testScreen = new TestScreen();
+			setScreen(testScreen);
+			Gdx.input.setInputProcessor(testScreen);
 			break;
 		}
 	}
@@ -68,10 +79,10 @@ public class CaroGame extends Game implements IMercuryListenter {
 				}
 				return;
 			} else {
-				
+
 				String cmd = json.getString(org.gsn.packet.CmdDefine.CMD);
 				JSONObject params = json.getJSONObject(CmdDefine.PARAMS);
-				
+
 				if (cmd.equals(CmdDefine.GET_USER_INFO)) {
 					Debug.trace("GUI");
 					JSONObject me = params.getJSONObject("me");
@@ -89,20 +100,20 @@ public class CaroGame extends Game implements IMercuryListenter {
 						DataProvider.getInstance().setOtherInfo(infoOne);
 					client.write(PacketFactory.createReady());
 				} else if (cmd.equals(CmdDefine.GAME_START)) {
-					// Toast.makeText(this, "Game Start", Toast.LENGTH_LONG);				
+					// Toast.makeText(this, "Game Start", Toast.LENGTH_LONG);
 					Debug.trace("start");
 					int firstMove = params.getInt("whoseTurn");
-					//TODO new game
+					// TODO new game
 				} else if (cmd.equals(CmdDefine.CHESS_MOVE)) {
 					int turn = params.getInt("whoseTurn");
 					int cell = params.getInt("cell");
-					//TODO move
+					// TODO move
 				} else if (cmd.equals(CmdDefine.GAME_STOP)) {
 					if (!params.has("winner")) {
-						//TODO hoa
+						// TODO hoa
 
 					} else {
-						//TODO thang thua
+						// TODO thang thua
 						int winner = params.getInt("winner");
 						int can = params.getInt("canContinue");
 						if (winner == DataProvider.getInstance().getMyInfo().uid) {
@@ -113,7 +124,7 @@ public class CaroGame extends Game implements IMercuryListenter {
 					}
 				}
 			}
-		} catch (JSONException e) { 
+		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 	}

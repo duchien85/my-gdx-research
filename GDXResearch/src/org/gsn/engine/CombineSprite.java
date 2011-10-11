@@ -1,0 +1,35 @@
+package org.gsn.engine;
+
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Rectangle;
+
+public abstract class CombineSprite {
+	 protected float x;
+	 protected float y;	 
+	 protected Rectangle rectBound;
+
+	 public void setPos(float x, float y){
+		 this.x = x;
+		 this.y = y;
+	 }	 
+	 
+	 public void touchDown(float localX, float localY){
+		 
+	 }	 
+	 
+	 public Rectangle getRectangleBounding(){
+		 return rectBound;
+	 }
+	 
+	 public float getX(){
+		 return x;
+	 }
+	 
+	 public float getY(){
+		 return y;
+	 }
+	 
+	 abstract public void draw(SpriteBatch batcher);	 
+}
