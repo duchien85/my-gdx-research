@@ -1,20 +1,25 @@
-package org.gsn.caro;
+package org.gsn.engine;
 
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.gsn.engine.CombineSprite;
-import org.gsn.engine.Debug;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.HAlignment;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 
-public class MenuSpirte extends CombineSprite {
+public class MenuSpirte extends CustomSprite {
+	public static interface IMenuListener{
+		void clickMenuItem(int index);
+	}
+	
 	private BitmapFont font;
 	private List<String> itemList;
+	private IMenuListener listener;
 
 	public MenuSpirte(BitmapFont font, float width, String... items) {
 		this.font = font;
@@ -23,6 +28,11 @@ public class MenuSpirte extends CombineSprite {
 			itemList.add(items[i]);
 		}
 		init(font, itemList, width);
+	}
+	
+	public void setListener(IMenuListener listener){
+		this.listener = listener;
+		
 	}
 
 	private float width;
@@ -38,6 +48,7 @@ public class MenuSpirte extends CombineSprite {
 	public MenuSpirte(BitmapFont font, float width, List<String> items) {
 		init(font, items, width);
 	}
+		
 
 	private List<Rectangle> recList;
 
@@ -59,10 +70,12 @@ public class MenuSpirte extends CombineSprite {
 
 	}
 
+
 	@Override
 	public void touchDown(float localX, float localY) {
 		// TODO Auto-generated method stub
-		int index =  itemList.size() - 1 - (int) (localY / font.getLineHeight());
-		Debug.trace(index);
+		int index =  itemList.size() - 1 - (int) (localY / font.getLineHeight());		
+		if (listener != null)
+			listener.clickMenuItem(index);
 	}			
 }

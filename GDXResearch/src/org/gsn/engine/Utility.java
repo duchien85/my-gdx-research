@@ -1,4 +1,4 @@
-package org.gsn.caro;
+package org.gsn.engine;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -13,9 +13,17 @@ public class Utility {
 	public static Vector2 getCenter(Sprite sprite) {
 		return new Vector2(sprite.getX() + sprite.getWidth() / 2, sprite.getY() + sprite.getHeight() / 2);
 	}
+	
+	public static Vector2 getCenter(CustomSprite sprite) {
+		return new Vector2(sprite.getX() + sprite.getWidth() / 2, sprite.getY() + sprite.getHeight() / 2);
+	}
 
-	public static void setCenter(Sprite sprite, float x, float y) {
-		sprite.setPosition(0, 0);
+	public static void setCenter(Sprite sprite, float x, float y) {		
+		Vector2 cen = getCenter(sprite);
+		sprite.setPosition(x - cen.x, y - cen.y);
+	}
+	
+	public static void setCenter(CustomSprite sprite, float x, float y) {		
 		Vector2 cen = getCenter(sprite);
 		sprite.setPosition(x - cen.x, y - cen.y);
 	}
