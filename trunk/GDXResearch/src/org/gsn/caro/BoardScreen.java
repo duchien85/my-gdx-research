@@ -26,11 +26,11 @@ public class BoardScreen extends InputAdapter implements Screen {
 			logic.newGame(2);
 		}
 	}
-	
+
 	enum State {
 		IN_READY, IN_WAITING, IN_PLAY, IN_END
 	}
-	
+
 	Sprite back;
 	Sprite board;
 	SpriteBatch globalBatcher;
@@ -89,7 +89,7 @@ public class BoardScreen extends InputAdapter implements Screen {
 		Utility.moveToCenter(loseSprite, board);
 		back = CaroAssets.back;
 		back.setPosition(WIDTH - back.getWidth(), HEIGHT - back.getHeight());
-		//Debug.trace(back.getBoundingRectangle());
+		// Debug.trace(back.getBoundingRectangle());
 		waitOpponent = CaroAssets.waitOpponent;
 		Utility.moveToCenter(waitOpponent, board);
 	}
@@ -105,11 +105,11 @@ public class BoardScreen extends InputAdapter implements Screen {
 		// TODO Auto-generated method stub
 
 	}
-	
-	public void startgame(){
+
+	public void startgame() {
 		Debug.trace("startGame");
 		logic.newGame(1);
-		state = State.IN_PLAY;	
+		state = State.IN_PLAY;
 	}
 
 	@Override
@@ -123,11 +123,11 @@ public class BoardScreen extends InputAdapter implements Screen {
 		case Input.Keys.F2:
 			lose();
 			break;
-			
+
 		case Input.Keys.F3:
 			startgame();
 			break;
-			
+
 		case Input.Keys.A:
 			zoomCamera(0.2f);
 			break;
@@ -267,11 +267,11 @@ public class BoardScreen extends InputAdapter implements Screen {
 		globalTouch.set(x, y, 0);
 		guiCam.unproject(globalTouch);
 		localTouch.set(x, HEIGHT - y, 0);
-		Debug.trace("local    : " + localTouch);
+		//Debug.trace("local    : " + localTouch);
 		// Debug.trace("global : " + globalTouch);
 		// toa do so voi ban co
 		if (Utility.pointInRectangle(back.getBoundingRectangle(), localTouch.x, localTouch.y)) {
-			Debug.trace("click Back");
+			//Debug.trace("click Back");
 			game.setScreen(CaroGame.LOBBY);
 		}
 
@@ -356,7 +356,7 @@ public class BoardScreen extends InputAdapter implements Screen {
 	}
 
 	public void zoomCamera(float zoom) {
-		Debug.trace(" zoom : " + guiCam.zoom);
+		//Debug.trace(" zoom : " + guiCam.zoom);
 		float nz = guiCam.zoom + zoom;
 		if (nz <= MAX_ZOOM && nz >= MIN_ZOOM) {
 			guiCam.zoom += zoom;

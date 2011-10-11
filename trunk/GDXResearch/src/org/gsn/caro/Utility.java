@@ -1,7 +1,11 @@
 package org.gsn.caro;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -28,5 +32,23 @@ public class Utility {
 
 	public static boolean pointInRectangle(Rectangle r, float x, float y) {
 		return r.x <= x && r.x + r.width >= x && r.y <= y && r.y + r.height >= y;
+	}
+
+	public static Animation animation(String file, float frameDuration, int x, int y, int width, int height, int col, int row) {
+		Texture texture = new Texture(Gdx.files.internal(file));
+		return animation(texture, frameDuration, x, y, width, height, col, row);
+	}
+
+	public static Animation animation(Texture texture, float frameDuration, int x, int y, int width, int height, int col, int row) {
+		TextureRegion region = new TextureRegion(texture, x, y, width, height);
+		TextureRegion[][] tmp = region.split(width / col, height / row);
+		TextureRegion[] frames = new TextureRegion[col * row];
+		int index = 0;
+		for (int i = 0; i < row; i++) {
+			for (int j = 0; j < col; j++) {
+				frames[index++] = tmp[i][j];
+			}
+		}
+		return new Animation(frameDuration, frames);
 	}
 }

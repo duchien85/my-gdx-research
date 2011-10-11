@@ -26,14 +26,14 @@ public class MercuryClient {
 	private Set<IMercuryListenter> listenerSet;
 
 	// public void addListener(IMercuryListenter lis )
-	
+
 	public void write(JSONObject s) {
 		write(s.toString());
 	}
-	
+
 	public void write(String s) {
 		try {
-			Debug.trace("----- send : " + s);			
+			Debug.trace("----- send : " + s);
 			byte[] bytes = s.getBytes("UTF-8");
 			ByteBuffer buffer = ByteBuffer.allocate(s.length() + 2);
 			buffer.putShort((short) bytes.length);
@@ -45,10 +45,10 @@ public class MercuryClient {
 		}
 	}
 
-	public void removeAllListener(){
+	public void removeAllListener() {
 		listenerSet.clear();
 	}
-	
+
 	public void addListener(IMercuryListenter l) {
 		listenerSet.add(l);
 	}
@@ -65,15 +65,16 @@ public class MercuryClient {
 	public void disconnect() {
 		connected = false;
 	}
-	
-	public boolean isConnected(){
+
+	public boolean isConnected() {
 		if (socket == null)
 			return false;
 		return (socket.isConnected());
 	}
-	
-	public void waitConnect(){
-		while (!isConnected());			
+
+	public void waitConnect() {
+		while (!isConnected())
+			;
 	}
 
 	class MyThread implements Runnable {
@@ -87,19 +88,18 @@ public class MercuryClient {
 				// "{\"params\":{\"username\":\"1F01898806543ED2AAC9A104\"},\"_cmd\":\"login\",\"ext\":\"caro\"}";
 				// where you issue the commands
 				char[] b = new char[1000];
-				BufferedReader read = new BufferedReader(new InputStreamReader(
-						socket.getInputStream()));
+				BufferedReader read = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				while (connected) {
 					int n = read.read(b);
 					if (n > 0) {
-						String str = new String(b, 1, n - 2);						
+						String str = new String(b, 1, n - 2);
 						Debug.trace("receive : *" + str + "*");
 						Iterator<IMercuryListenter> it = listenerSet.iterator();
 						while (it.hasNext()) {
 							try {
 								IMercuryListenter l = it.next();
 								l.onReceive(str);
-							} catch (Exception e) {								
+							} catch (Exception e) {
 								Debug.e(e);
 							}
 						}

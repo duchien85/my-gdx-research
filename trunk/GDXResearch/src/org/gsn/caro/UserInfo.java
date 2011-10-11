@@ -14,8 +14,8 @@ public class UserInfo {
 	public int xu;
 	public String name;
 	public String avatar;
-	
-	public UserInfo(JSONObject data){
+
+	public UserInfo(JSONObject data) {
 		try {
 			exp = data.getInt("exp");
 			numLose = data.getInt("numLose");
@@ -26,6 +26,6 @@ public class UserInfo {
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}		
+		}
 	}
 }

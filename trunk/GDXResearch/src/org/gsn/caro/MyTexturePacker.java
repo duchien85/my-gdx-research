@@ -17,7 +17,7 @@ public class MyTexturePacker {
 		settings.incremental = true;
 		// new JoglApplication(new CaroGame(), "Super Jumper", Constant.WIDTH,
 		// Constant.HEIGHT, false);
-		TexturePacker.process(settings, "D:/Longvh/Eclipse/content", "D:/Longvh/Eclipse/my-gdx-research/MetaGunAndroid/assets/gdx");
+		TexturePacker.process(settings, "D:/libGDX/my-gdx-research/img", "D:/libGDX/my-gdx-research/MetaGunAndroid/assets/gdx");
 		// Debug.trace(Gdx.files.internal("img").);
 	}
 

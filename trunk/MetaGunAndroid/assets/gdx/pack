@@ -1,5 +1,5 @@
 
-content1.png
+img1.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -24,37 +24,44 @@ cuoc1G
   orig: 100, 115
   offset: 0, 0
   index: -1
-waitOpponent
-  rotate: false
-  xy: 2, 646
-  size: 210, 94
-  orig: 210, 94
-  offset: 0, 0
-  index: -1
-ready
-  rotate: false
-  xy: 214, 646
-  size: 268, 71
-  orig: 268, 71
-  offset: 0, 0
-  index: -1
 win
   rotate: false
   xy: 324, 441
-  size: 157, 66
-  orig: 157, 66
+  size: 97, 113
+  orig: 97, 113
   offset: 0, 0
   index: -1
 lose
   rotate: false
-  xy: 324, 509
-  size: 157, 66
-  orig: 157, 66
+  xy: 2, 646
+  size: 97, 113
+  orig: 97, 113
+  offset: 0, 0
+  index: -1
+avatar
+  rotate: false
+  xy: 426, 324
+  size: 77, 110
+  orig: 77, 110
+  offset: 0, 0
+  index: -1
+wait
+  rotate: false
+  xy: 101, 646
+  size: 148, 99
+  orig: 148, 99
+  offset: 0, 0
+  index: -1
+ready
+  rotate: false
+  xy: 101, 747
+  size: 268, 71
+  orig: 268, 71
   offset: 0, 0
   index: -1
 back
   rotate: false
-  xy: 426, 324
+  xy: 423, 441
   size: 31, 31
   orig: 31, 31
   offset: 0, 0
