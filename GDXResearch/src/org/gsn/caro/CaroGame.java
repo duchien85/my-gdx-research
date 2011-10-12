@@ -1,5 +1,8 @@
 package org.gsn.caro;
 
+import java.io.File;
+import java.io.OutputStream;
+
 import org.gsn.engine.Debug;
 import org.gsn.engine.IMercuryListenter;
 import org.gsn.engine.MercuryClient;
@@ -11,6 +14,7 @@ import org.json.JSONObject;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 
 public class CaroGame extends Game implements IMercuryListenter {
 	final static int TEST = -1;
@@ -23,8 +27,15 @@ public class CaroGame extends Game implements IMercuryListenter {
 
 	@Override
 	public void create() {
-//		CaroAssets.load();
-//		setScreen(TEST);
+		CaroAssets.load();
+		setScreen(LOBBY);
+		String imageURL = "http://s2.gonct.info/playlist/2011/04/05/1TztueYWS0It.jpg";
+				
+		FileHandle f = Gdx.files.external("a.png");		
+		Debug.trace(f.exists() + " : " + f.path());
+		ImageManager.DownloadFromUrl(imageURL, f.write(false));		
+//		File a = new File("gdx/img1.png");
+//		Debug.trace(a.getAbsolutePath());
 		//connect();
 	}
 	
