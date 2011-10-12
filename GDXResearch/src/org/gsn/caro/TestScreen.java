@@ -5,9 +5,12 @@ import org.gsn.engine.MenuSpirte;
 import org.gsn.engine.Utility;
 import org.gsn.engine.MenuSpirte.IMenuListener;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.GLCommon;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -29,16 +32,21 @@ public class TestScreen extends InputAdapter implements Screen {
 			public void clickMenuItem(int index) {
 				// TODO Auto-generated method stub
 				Debug.trace(index);
+				menu.setTextMenu(index, "trung");
 			}
 		});
 
-		Utility.setCenter(menu, Constant.WIDTH / 2, Constant.HEIGHT / 2);
+		menu.setCenter(Constant.WIDTH / 2, Constant.HEIGHT / 2);
 	}
 
 	@Override
 	public void render(float delta) {
 		// TODO Auto-generated method stub
 		time += delta;
+		GLCommon gl = Gdx.gl;
+		gl.glClearColor(0, 0, 0, 1);
+		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		
 		batcher.begin();
 		menu.draw(batcher);
 		batcher.end();
