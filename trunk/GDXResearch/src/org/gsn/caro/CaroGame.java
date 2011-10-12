@@ -23,8 +23,8 @@ public class CaroGame extends Game implements IMercuryListenter {
 
 	@Override
 	public void create() {
-		CaroAssets.load();
-		setScreen(TEST);
+//		CaroAssets.load();
+//		setScreen(TEST);
 		//connect();
 	}
 	

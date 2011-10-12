@@ -182,6 +182,11 @@ public class BoardScreen extends InputAdapter implements Screen {
 		GLCommon gl = Gdx.gl;
 		gl.glClearColor(0, 0, 0, 1);
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		
+//		gl.glViewport(100, 100, 200, 200);
+//		guiCam.viewportWidth = 10;
+//		guiCam.viewportHeight = 10;
+		
 		guiCam.update();
 		// local
 		localBatcher.begin();

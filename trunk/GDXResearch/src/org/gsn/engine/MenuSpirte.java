@@ -21,36 +21,21 @@ public class MenuSpirte extends CustomSprite {
 	private List<String> itemList;
 	private IMenuListener listener;
 
-	public MenuSpirte(BitmapFont font, float width, String... items) {
-		this.font = font;
+	private List<Rectangle> recList;
+	
+	private float width;
+	
+	public MenuSpirte(BitmapFont font, float width, List<String> items) {
+		init(font, items, width);
+	}
+
+	public MenuSpirte(BitmapFont font, float width, String... items) {  		
 		List<String> itemList = new ArrayList<String>();
 		for (int i = 0; i < items.length; i++) {
 			itemList.add(items[i]);
 		}
 		init(font, itemList, width);
 	}
-	
-	public void setListener(IMenuListener listener){
-		this.listener = listener;
-		
-	}
-
-	private float width;
-
-	private void init(BitmapFont font, List<String> items, float width) {
-		this.font = font;
-		itemList = new ArrayList<String>(items);
-		this.width = width;
-		recList = new ArrayList<Rectangle>();
-		rectBound = new Rectangle(0, 0, width, items.size() * font.getLineHeight());
-	}
-
-	public MenuSpirte(BitmapFont font, float width, List<String> items) {
-		init(font, items, width);
-	}
-		
-
-	private List<Rectangle> recList;
 
 	@Override
 	public void draw(SpriteBatch batcher) {
@@ -68,6 +53,24 @@ public class MenuSpirte extends CustomSprite {
 			count++;
 		}
 
+	}
+
+	private void init(BitmapFont font, List<String> items, float width) {
+		this.font = font;
+		itemList = new ArrayList<String>(items);
+		this.width = width;
+		recList = new ArrayList<Rectangle>();
+		rectBound = new Rectangle(0, 0, width, items.size() * font.getLineHeight());
+	}
+		
+
+	public void setListener(IMenuListener listener){
+		this.listener = listener;
+		
+	}
+
+	public void setTextMenu(int index, String s){
+		itemList.set(index, s);
 	}
 
 
