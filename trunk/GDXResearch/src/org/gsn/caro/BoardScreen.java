@@ -63,11 +63,13 @@ public class BoardScreen extends InputAdapter implements Screen {
 	CaroGame game;
 	float rotationSpeed;
 	public float time = 0;
-
+	private Rectangle glViewport;
 	public BoardScreen(CaroGame game) {
 		this.game = game;
 		rotationSpeed = 0.5f;
+		glViewport = new Rectangle(0, 0, WIDTH , HEIGHT);
 		guiCam = new OrthographicCamera(WIDTH, HEIGHT);
+		//guiCam = new OrthographicCamera(WIDTH , HEIGHT / 4);
 		guiCam.position.set(0, 0, 0);
 		globalBatcher = new SpriteBatch();
 		localBatcher = new SpriteBatch();
@@ -181,7 +183,9 @@ public class BoardScreen extends InputAdapter implements Screen {
 		time += delta;
 		GLCommon gl = Gdx.gl;
 		gl.glClearColor(0, 0, 0, 1);
-		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);		
+		gl.glViewport((int) glViewport.x, (int) glViewport.y,
+                (int) glViewport.width, (int) glViewport.height);
 		
 //		gl.glViewport(100, 100, 200, 200);
 //		guiCam.viewportWidth = 10;

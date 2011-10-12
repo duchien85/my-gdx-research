@@ -38,7 +38,8 @@ public class LobyScreen extends InputAdapter implements Screen {
 		localBatcher = new SpriteBatch();
 		cuoc1G = CaroAssets.cuoc1G;
 		Utility.setCenter(cuoc1G, WIDTH / 2, HEIGHT / 2);
-		guiCam = new OrthographicCamera(WIDTH, HEIGHT);
+		//guiCam = new OrthographicCamera(10, 20);
+		guiCam = new OrthographicCamera(WIDTH , HEIGHT );
 	}
 
 	@Override
