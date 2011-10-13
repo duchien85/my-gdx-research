@@ -25,7 +25,8 @@ public class TestScreen extends InputAdapter implements Screen {
 
 	public TestScreen() {
 		// TODO Auto-generated constructor stub
-		menu = new MenuSpirte(CaroAssets.font, 300, "play", "music", "pause");
+		menu = new MenuSpirte(CaroAssets.arialFont, 300, "Viết Tiếng Việt này", "music", "pause");
+		Debug.trace("Viết Tiếng Việt này");
 		menu.setListener(new IMenuListener() {
 
 			@Override
@@ -49,6 +50,7 @@ public class TestScreen extends InputAdapter implements Screen {
 		
 		batcher.begin();
 		menu.draw(batcher);
+		batcher.draw(CaroAssets.test, 20, 20);
 		batcher.end();
 
 	}
