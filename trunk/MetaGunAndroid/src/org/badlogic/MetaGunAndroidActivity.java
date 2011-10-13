@@ -20,8 +20,7 @@ public class MetaGunAndroidActivity extends AndroidApplication {
     public void onCreate (android.os.Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         String imageURL = "http://s2.gonct.info/playlist/2011/04/05/1TztueYWS0It.jpg";
-        try{
-		ImageManager.DownloadFromUrl(imageURL, "a.jpg");
+        try{		
 		Log.i("img", "loa xong anh roi ne");
         } catch (Exception e) {
 			// TODO: handle exception
