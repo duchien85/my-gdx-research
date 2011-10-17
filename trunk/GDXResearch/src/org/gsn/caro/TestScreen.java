@@ -1,43 +1,37 @@
 package org.gsn.caro;
 
 import org.gsn.engine.Debug;
-import org.gsn.engine.MenuSpirte;
-import org.gsn.engine.Utility;
-import org.gsn.engine.MenuSpirte.IMenuListener;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GLCommon;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
+import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.OnActionCompleted;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Delay;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveBy;
+import com.badlogic.gdx.scenes.scene2d.actions.Sequence;
+import com.badlogic.gdx.scenes.scene2d.actors.Image;
 
-public class TestScreen extends InputAdapter implements Screen {
+public class TestScreen extends InputAdapter implements Screen, OnActionCompleted {
 	SpriteBatch batcher = new SpriteBatch();
 	float time = 0;
-	MenuSpirte menu;
-	Sprite moc = new Sprite(CaroAssets.pieceX);
+	Stage stage = new Stage(Constant.WIDTH, Constant.HEIGHT, true);
+	Image img;
 
 	public TestScreen() {
 		// TODO Auto-generated constructor stub
-		menu = new MenuSpirte(CaroAssets.arialFont, 300, "Viết Tiếng Việt này", "music", "pause");
-		Debug.trace("Viết Tiếng Việt này");
-		menu.setListener(new IMenuListener() {
-
-			@Override
-			public void clickMenuItem(int index) {
-				// TODO Auto-generated method stub
-				Debug.trace(index);
-				menu.setTextMenu(index, "trung");
-			}
-		});
-
-		menu.setCenter(Constant.WIDTH / 2, Constant.HEIGHT / 2);
+		img = new com.badlogic.gdx.scenes.scene2d.actors.Image("trung", CaroAssets.avatar);
+		img.width = img.height = 100;
+		img.originX = 50;
+		img.originY = 50;
+		Delay delay = Delay.$(MoveBy.$(100, 100, 1).setCompletionListener(this), 3);
+		delay.setCompletionListener(this);
+		img.action(Sequence.$(delay).setCompletionListener(this));
+		stage.addActor(img);
 	}
 
 	@Override
@@ -47,11 +41,13 @@ public class TestScreen extends InputAdapter implements Screen {
 		GLCommon gl = Gdx.gl;
 		gl.glClearColor(0, 0, 0, 1);
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		
+
 		batcher.begin();
-		menu.draw(batcher);
-		batcher.draw(CaroAssets.test, 20, 20);
+		// batcher.draw(CaroAssets.test, 20, 20);
+
 		batcher.end();
+		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+		stage.draw();
 
 	}
 
@@ -95,11 +91,15 @@ public class TestScreen extends InputAdapter implements Screen {
 	public boolean touchDown(int x, int y, int pointer, int button) {
 		// TODO Auto-generated method stub
 		y = Constant.HEIGHT - y;
-		if (Utility.pointInRectangle(menu.getRectangleBounding(), x, y)) {
-			Debug.trace("click Menu");
-			menu.touchDown(x - menu.getX(), y - menu.getY());
-		}
+
 		return true;
+	}
+
+	@Override
+	public void completed(Action action) {
+		// TODO Auto-generated method stub
+		Debug.trace("complete");
+
 	}
 
 }

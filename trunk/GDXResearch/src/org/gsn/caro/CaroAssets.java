@@ -52,7 +52,7 @@ public class CaroAssets {
 
 	public static void loadImage() {
 		String imageURL = "http://s2.gonct.info/playlist/2011/04/05/1TztueYWS0It.jpg";
-		test = ImageManager.downloadToTexture(imageURL, 32, 32);
+		//test = ImageManager.downloadToTexture(imageURL, 32, 32);
 		
 		atlas = new TextureAtlas(Gdx.files.internal("gdx/pack"));
 		background = atlas.createSprite("background");
