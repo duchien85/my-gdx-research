@@ -32,6 +32,9 @@ public class TestScreen extends InputAdapter implements Screen, OnActionComplete
 		delay.setCompletionListener(this);
 		img.action(Sequence.$(delay).setCompletionListener(this));
 		stage.addActor(img);
+		Debug.trace("Width : " + Constant.WIDTH / Gdx.graphics.getPpiX() + " inc ");
+		Debug.trace("Height : " + Constant.HEIGHT / Gdx.graphics.getPpiY() + " inc ");
+		//Gdx.graphics.g
 	}
 
 	@Override

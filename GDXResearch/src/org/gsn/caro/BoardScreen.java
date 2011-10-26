@@ -19,6 +19,13 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
 public class BoardScreen extends InputAdapter implements Screen {
+	private int numberOfFingers = 0;
+	int fingerOnePointer;
+	int fingerTwoPointer;
+	float lastDistance = 0;
+	Vector3 fingerOne = new Vector3();
+	Vector3 fingerTwo = new Vector3();
+	
 	private class EndEnimationTask extends TimerTask {
 		@Override
 		public void run() {
@@ -174,7 +181,7 @@ public class BoardScreen extends InputAdapter implements Screen {
 	@Override
 	public void pause() {
 		// TODO Auto-generated method stub
-
+		numberOfFingers = 0;
 	}
 
 	@Override
@@ -329,10 +336,46 @@ public class BoardScreen extends InputAdapter implements Screen {
 
 	boolean dragged = false;
 	Vector3 oldTouch;
-
+	
+	
+	@Override
+	public boolean touchDown(int x, int y, int pointer, int button) {
+		// TODO Auto-generated method stub
+		numberOfFingers++;
+		if (numberOfFingers == 1){
+			fingerOnePointer = pointer;
+			fingerOne.set(x, y, 0);
+		} else if (numberOfFingers == 2){
+			fingerTwoPointer = pointer;
+			fingerTwo.set(x, y, 0);
+			float distance = fingerOne.dst(fingerTwo);
+			lastDistance = distance;
+		}
+		return true;
+	}
 	@Override
 	public boolean touchDragged(int x, int y, int pointer) {
 		// TODO Auto-generated method stub
+		if (pointer == fingerOnePointer){
+			fingerOne.set(x, y, 0);
+		}
+		if (pointer == fingerTwoPointer){
+			fingerTwo.set(x, y, 0);
+		}
+		
+		float distance = fingerOne.dst(fingerTwo);
+		float factor = distance / lastDistance;
+		
+		if (lastDistance > distance){
+			guiCam.zoom += factor;
+		} else {
+			guiCam.zoom -= factor;
+		}
+		
+		lastDistance = distance;
+		guiCam.update();
+		guiCam.apply(Gdx.gl10);
+		
 		Vector3 touch = new Vector3(x, HEIGHT - y, 0);
 		// guiCam.unproject(touch);
 		if (dragged)
@@ -346,6 +389,16 @@ public class BoardScreen extends InputAdapter implements Screen {
 	@Override
 	public boolean touchUp(int x, int y, int pointer, int button) {
 		// TODO Auto-generated method stub
+		if (numberOfFingers == 1){
+			Vector3 touchPoint = new Vector3(x, y, 0);
+			guiCam.unproject(touchPoint);
+		}
+		numberOfFingers--;
+		
+		if (numberOfFingers < 0)
+			numberOfFingers = 0;
+		lastDistance = 0;
+		
 		if (!dragged)
 			danh(x, y);
 		dragged = false;

@@ -28,7 +28,7 @@ public class CaroGame extends Game implements IMercuryListenter {
 	@Override
 	public void create() {
 		CaroAssets.load();
-		setScreen(TEST);
+		setScreen(BOARD);
 //		String imageURL = "http://s2.gonct.info/playlist/2011/04/05/1TztueYWS0It.jpg";
 //				
 //		FileHandle f = Gdx.files.external("a.png");		
