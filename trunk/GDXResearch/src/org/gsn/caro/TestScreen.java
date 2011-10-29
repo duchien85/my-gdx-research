@@ -12,7 +12,10 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.OnActionCompleted;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Delay;
+import com.badlogic.gdx.scenes.scene2d.actions.FadeIn;
+import com.badlogic.gdx.scenes.scene2d.actions.FadeOut;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveBy;
+import com.badlogic.gdx.scenes.scene2d.actions.Remove;
 import com.badlogic.gdx.scenes.scene2d.actions.Sequence;
 import com.badlogic.gdx.scenes.scene2d.actors.Image;
 
@@ -28,9 +31,11 @@ public class TestScreen extends InputAdapter implements Screen, OnActionComplete
 		img.width = img.height = 100;
 		img.originX = 50;
 		img.originY = 50;
-		Delay delay = Delay.$(MoveBy.$(100, 100, 1).setCompletionListener(this), 3);
+		img.x = img.y = 100;
+		//Delay delay = Delay.$(MoveBy.$(100, 100, 3), 3);
+		Delay delay = Delay.$(FadeOut.$(3f), 3);
 		delay.setCompletionListener(this);
-		img.action(Sequence.$(delay).setCompletionListener(this));
+		img.action(Sequence.$(delay));
 		stage.addActor(img);
 		Debug.trace("Width : " + Constant.WIDTH / Gdx.graphics.getPpiX() + " inc ");
 		Debug.trace("Height : " + Constant.HEIGHT / Gdx.graphics.getPpiY() + " inc ");
