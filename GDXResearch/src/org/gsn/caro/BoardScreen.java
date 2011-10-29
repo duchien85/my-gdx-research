@@ -19,19 +19,12 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
 public class BoardScreen extends InputAdapter implements Screen {
-	private int numberOfFingers = 0;
-	int fingerOnePointer;
-	int fingerTwoPointer;
-	float lastDistance = 0;
-	Vector3 fingerOne = new Vector3();
-	Vector3 fingerTwo = new Vector3();
-	
 	private class EndEnimationTask extends TimerTask {
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub
-			state = State.IN_READY;
-			logic.newGame(2);
+			// state = State.IN_READY;
+			// logic.newGame(2);
 		}
 	}
 
@@ -45,7 +38,13 @@ public class BoardScreen extends InputAdapter implements Screen {
 	Vector3 globalTouch = new Vector3();
 	OrthographicCamera guiCam;
 	final float HEIGHT = Constant.HEIGHT;
-
+	GsnMultiTouch multiTouch = new GsnMultiTouch(this);
+	int numberOfFingers = 0;
+	int fingerOnePointer;
+	int fingerTwoPointer;
+	float lastDistance = 0;
+	Vector3 fingerOne = new Vector3();
+	Vector3 fingerTwo = new Vector3();
 	boolean isWin;
 	final float kc_le = 15;
 
@@ -71,13 +70,14 @@ public class BoardScreen extends InputAdapter implements Screen {
 	float rotationSpeed;
 	public float time = 0;
 	private Rectangle glViewport;
+
 	public BoardScreen(CaroGame game) {
 		this.game = game;
 		rotationSpeed = 0.5f;
-		glViewport = new Rectangle(0, 0, WIDTH , HEIGHT);
-		guiCam = new OrthographicCamera(WIDTH, HEIGHT);
-		//guiCam = new OrthographicCamera(WIDTH , HEIGHT / 4);
-		guiCam.position.set(0, 0, 0);
+		glViewport = new Rectangle(0, 0, WIDTH, HEIGHT);
+//		guiCam = new OrthographicCamera(WIDTH, HEIGHT);	
+//		guiCam.position.set(0, 0, 0);
+		resetCamera();
 		globalBatcher = new SpriteBatch();
 		localBatcher = new SpriteBatch();
 
@@ -123,12 +123,21 @@ public class BoardScreen extends InputAdapter implements Screen {
 	}
 
 	@Override
+	public boolean keyUp(int keycode) {
+		// TODO Auto-generated method stub
+		multiTouch.keyUp(keycode);
+		return true;
+	}
+
+	@Override
 	public boolean keyDown(int keycode) {
 		// TODO Auto-generated method stub
 		// Debug.trace(character);
+		multiTouch.keyDown(keycode);
 		switch (keycode) {
 		case Input.Keys.F1:
-			win();
+			// win();
+			resetCamera();
 			break;
 		case Input.Keys.F2:
 			lose();
@@ -172,6 +181,13 @@ public class BoardScreen extends InputAdapter implements Screen {
 		return true;
 	}
 
+	private void resetCamera() {
+		// TODO Auto-generated method stub
+		guiCam = new OrthographicCamera(WIDTH, HEIGHT);
+		guiCam.position.set(100, 100, 0);
+		Debug.trace("gui Cam begin : "  + cameraToString(guiCam));
+	}
+
 	public void lose() {
 		state = State.IN_END;
 		isWin = false;
@@ -190,14 +206,13 @@ public class BoardScreen extends InputAdapter implements Screen {
 		time += delta;
 		GLCommon gl = Gdx.gl;
 		gl.glClearColor(0, 0, 0, 1);
-		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);		
-		gl.glViewport((int) glViewport.x, (int) glViewport.y,
-                (int) glViewport.width, (int) glViewport.height);
-		
-//		gl.glViewport(100, 100, 200, 200);
-//		guiCam.viewportWidth = 10;
-//		guiCam.viewportHeight = 10;
-		
+		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		gl.glViewport((int) glViewport.x, (int) glViewport.y, (int) glViewport.width, (int) glViewport.height);
+
+		// gl.glViewport(100, 100, 200, 200);
+		// guiCam.viewportWidth = 10;
+		// guiCam.viewportHeight = 10;
+
 		guiCam.update();
 		// local
 		localBatcher.begin();
@@ -284,11 +299,11 @@ public class BoardScreen extends InputAdapter implements Screen {
 		globalTouch.set(x, y, 0);
 		guiCam.unproject(globalTouch);
 		localTouch.set(x, HEIGHT - y, 0);
-		//Debug.trace("local    : " + localTouch);
+		// Debug.trace("local    : " + localTouch);
 		// Debug.trace("global : " + globalTouch);
 		// toa do so voi ban co
 		if (Utility.pointInRectangle(back.getBoundingRectangle(), localTouch.x, localTouch.y)) {
-			//Debug.trace("click Back");
+			// Debug.trace("click Back");
 			game.setScreen(CaroGame.LOBBY);
 		}
 
@@ -336,69 +351,81 @@ public class BoardScreen extends InputAdapter implements Screen {
 
 	boolean dragged = false;
 	Vector3 oldTouch;
-	
-	
-	@Override
-	public boolean touchDown(int x, int y, int pointer, int button) {
-		// TODO Auto-generated method stub
-		numberOfFingers++;
-		if (numberOfFingers == 1){
-			fingerOnePointer = pointer;
-			fingerOne.set(x, y, 0);
-		} else if (numberOfFingers == 2){
-			fingerTwoPointer = pointer;
-			fingerTwo.set(x, y, 0);
-			float distance = fingerOne.dst(fingerTwo);
-			lastDistance = distance;
-		}
-		return true;
+
+	public static String cameraToString(OrthographicCamera camera){
+		return "[ " + camera.position.x + ", " + camera.position.y + ", " + camera.zoom + "]";
 	}
+	
 	@Override
 	public boolean touchDragged(int x, int y, int pointer) {
-		// TODO Auto-generated method stub
-		if (pointer == fingerOnePointer){
+		// TODO Auto-generated method stub	
+		if (pointer == fingerOnePointer) {
 			fingerOne.set(x, y, 0);
 		}
-		if (pointer == fingerTwoPointer){
+		if (pointer == fingerTwoPointer) {
 			fingerTwo.set(x, y, 0);
 		}
-		
+
 		float distance = fingerOne.dst(fingerTwo);
-		float factor = distance / lastDistance;
-		
-		if (lastDistance > distance){
-			guiCam.zoom += factor;
-		} else {
-			guiCam.zoom -= factor;
+		if (lastDistance != 0 && distance != 0) {
+			float factor = distance / lastDistance;
+			float deltaTime = Gdx.graphics.getDeltaTime();
+			float speed = 40 * deltaTime;
+			guiCam.zoom = guiCam.zoom / factor;						
 		}
-		
 		lastDistance = distance;
-		guiCam.update();
-		guiCam.apply(Gdx.gl10);
-		
+		if (numberOfFingers > 1)
+			return true;
+		// /////////////////////
+		Debug.trace("trc dich chuyen : " + cameraToString(guiCam));
 		Vector3 touch = new Vector3(x, HEIGHT - y, 0);
 		// guiCam.unproject(touch);
 		if (dragged)
-			translateCamera((-touch.x + oldTouch.x) / guiCam.zoom, (-touch.y + oldTouch.y) / guiCam.zoom);
+			translateCamera((-touch.x + oldTouch.x) * guiCam.zoom, (-touch.y + oldTouch.y) * guiCam.zoom);		
 		oldTouch = touch;
 		dragged = true;
+		
+		Debug.trace("trc dich chuyen : " + cameraToString(guiCam));
 		// Debug.trace("draged: " + touch);
+		return true;
+	}
+
+	@Override
+	public boolean touchDown(int x, int y, int pointer, int button) {
+		// TODO Auto-generated method stub
+		Debug.trace("touch Down: " + x + " , " + y + " , pointer : " + pointer);
+		numberOfFingers++;
+		if (numberOfFingers == 1) {
+			fingerOnePointer = pointer;
+			fingerOne.set(x, y, 0);
+		} else if (numberOfFingers == 2) {
+			fingerTwoPointer = pointer;
+			fingerTwo.set(x, y, 0);
+
+			float distance = fingerOne.dst(fingerTwo);
+			lastDistance = distance;
+		}
+		if (!dragged)
+			danh(x, y);
+		dragged = false;
 		return true;
 	}
 
 	@Override
 	public boolean touchUp(int x, int y, int pointer, int button) {
 		// TODO Auto-generated method stub
-		if (numberOfFingers == 1){
+		if (numberOfFingers == 1) {
 			Vector3 touchPoint = new Vector3(x, y, 0);
 			guiCam.unproject(touchPoint);
 		}
 		numberOfFingers--;
-		
-		if (numberOfFingers < 0)
+
+		// just some error prevention... clamping number of fingers (ouch! :-)
+		if (numberOfFingers < 0) {
 			numberOfFingers = 0;
-		lastDistance = 0;
-		
+		}
+
+		Debug.trace("touch Up: " + x + " , " + y + " , pointer : " + pointer);
 		if (!dragged)
 			danh(x, y);
 		dragged = false;
@@ -419,7 +446,7 @@ public class BoardScreen extends InputAdapter implements Screen {
 	}
 
 	public void zoomCamera(float zoom) {
-		//Debug.trace(" zoom : " + guiCam.zoom);
+		// Debug.trace(" zoom : " + guiCam.zoom);
 		float nz = guiCam.zoom + zoom;
 		if (nz <= MAX_ZOOM && nz >= MIN_ZOOM) {
 			guiCam.zoom += zoom;
