@@ -75,8 +75,8 @@ public class BoardScreen extends InputAdapter implements Screen {
 		this.game = game;
 		rotationSpeed = 0.5f;
 		glViewport = new Rectangle(0, 0, WIDTH, HEIGHT);
-//		guiCam = new OrthographicCamera(WIDTH, HEIGHT);	
-//		guiCam.position.set(0, 0, 0);
+		// guiCam = new OrthographicCamera(WIDTH, HEIGHT);
+		// guiCam.position.set(0, 0, 0);
 		resetCamera();
 		globalBatcher = new SpriteBatch();
 		localBatcher = new SpriteBatch();
@@ -107,7 +107,7 @@ public class BoardScreen extends InputAdapter implements Screen {
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
-
+		Float.isInfinite(0f);
 	}
 
 	@Override
@@ -185,7 +185,7 @@ public class BoardScreen extends InputAdapter implements Screen {
 		// TODO Auto-generated method stub
 		guiCam = new OrthographicCamera(WIDTH, HEIGHT);
 		guiCam.position.set(100, 100, 0);
-		Debug.trace("gui Cam begin : "  + cameraToString(guiCam));
+		Debug.trace("gui Cam begin : " + cameraToString(guiCam));
 	}
 
 	public void lose() {
@@ -352,13 +352,13 @@ public class BoardScreen extends InputAdapter implements Screen {
 	boolean dragged = false;
 	Vector3 oldTouch;
 
-	public static String cameraToString(OrthographicCamera camera){
+	public static String cameraToString(OrthographicCamera camera) {
 		return "[ " + camera.position.x + ", " + camera.position.y + ", " + camera.zoom + "]";
 	}
-	
+
 	@Override
 	public boolean touchDragged(int x, int y, int pointer) {
-		// TODO Auto-generated method stub	
+		// TODO Auto-generated method stub
 		if (pointer == fingerOnePointer) {
 			fingerOne.set(x, y, 0);
 		}
@@ -367,24 +367,25 @@ public class BoardScreen extends InputAdapter implements Screen {
 		}
 
 		float distance = fingerOne.dst(fingerTwo);
-		if (lastDistance != 0 && distance != 0) {
-			float factor = distance / lastDistance;
-			float deltaTime = Gdx.graphics.getDeltaTime();
-			float speed = 40 * deltaTime;
-			guiCam.zoom = guiCam.zoom / factor;						
-		}
-		lastDistance = distance;
-		if (numberOfFingers > 1)
+		if (numberOfFingers > 1) {
+			if (lastDistance != 0 && distance != 0) {				
+				float zoom = guiCam.zoom * lastDistance / distance;
+				if (zoom > 0.2 && zoom < 2.0)
+					guiCam.zoom = zoom;
+			}
+			lastDistance = distance;
+
 			return true;
+		}
 		// /////////////////////
 		Debug.trace("trc dich chuyen : " + cameraToString(guiCam));
 		Vector3 touch = new Vector3(x, HEIGHT - y, 0);
 		// guiCam.unproject(touch);
 		if (dragged)
-			translateCamera((-touch.x + oldTouch.x) * guiCam.zoom, (-touch.y + oldTouch.y) * guiCam.zoom);		
+			translateCamera((-touch.x + oldTouch.x) * guiCam.zoom, (-touch.y + oldTouch.y) * guiCam.zoom);
 		oldTouch = touch;
 		dragged = true;
-		
+
 		Debug.trace("trc dich chuyen : " + cameraToString(guiCam));
 		// Debug.trace("draged: " + touch);
 		return true;

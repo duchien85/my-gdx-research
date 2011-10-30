@@ -17,7 +17,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class CaroAssets {
-	static private TextureAtlas atlas;
+	static public TextureAtlas atlas;
 
 	public static Texture loadTexture(String file) {
 		return new Texture(Gdx.files.internal(file));
@@ -36,7 +36,7 @@ public class CaroAssets {
 	public static Sprite avatar;
 
 	public static Music music;
-	public static Sound hitSound;
+	public static Sound hitSound;	
 
 	public static BitmapFont font;
 	public static BitmapFont arialFont;
