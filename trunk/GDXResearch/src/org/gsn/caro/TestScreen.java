@@ -1,62 +1,34 @@
 package org.gsn.caro;
 
 import org.gsn.engine.Debug;
+import org.gsn.engine.Utility;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.GLCommon;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.OnActionCompleted;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Delay;
-import com.badlogic.gdx.scenes.scene2d.actions.FadeIn;
-import com.badlogic.gdx.scenes.scene2d.actions.FadeOut;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveBy;
-import com.badlogic.gdx.scenes.scene2d.actions.Remove;
-import com.badlogic.gdx.scenes.scene2d.actions.Sequence;
-import com.badlogic.gdx.scenes.scene2d.actors.Image;
 
 public class TestScreen extends InputAdapter implements Screen, OnActionCompleted {
 	SpriteBatch batcher = new SpriteBatch();
-	float time = 0;
-	Stage stage = new Stage(Constant.WIDTH, Constant.HEIGHT, true);
-	Image img;
-
+	TextureRegion tex = CaroAssets.atlas.findRegion("cuoc1G");
+	GsnScrollTextureRegion scroll = new GsnScrollTextureRegion(tex);
 	public TestScreen() {
 		// TODO Auto-generated constructor stub
-		img = new com.badlogic.gdx.scenes.scene2d.actors.Image("trung", CaroAssets.avatar);
-		img.width = img.height = 100;
-		img.originX = 50;
-		img.originY = 50;
-		img.x = img.y = 100;
-		//Delay delay = Delay.$(MoveBy.$(100, 100, 3), 3);
-		Delay delay = Delay.$(FadeOut.$(3f), 3);
-		delay.setCompletionListener(this);
-		img.action(Sequence.$(delay));
-		stage.addActor(img);
-		Debug.trace("Width : " + Constant.WIDTH / Gdx.graphics.getPpiX() + " inc ");
-		Debug.trace("Height : " + Constant.HEIGHT / Gdx.graphics.getPpiY() + " inc ");
+		Debug.trace("old : "  + Utility.RegionToString(scroll) );
 		//Gdx.graphics.g
+		
+		scroll.scroll(20);
+		Debug.trace("new : "  + Utility.RegionToString(scroll) );
 	}
 
 	@Override
 	public void render(float delta) {
 		// TODO Auto-generated method stub
-		time += delta;
-		GLCommon gl = Gdx.gl;
-		gl.glClearColor(0, 0, 0, 1);
-		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-
 		batcher.begin();
-		// batcher.draw(CaroAssets.test, 20, 20);
-
+		batcher.draw(scroll, 100, 100);		
 		batcher.end();
-		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-		stage.draw();
-
 	}
 
 	@Override

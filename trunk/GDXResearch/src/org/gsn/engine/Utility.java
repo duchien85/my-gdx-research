@@ -59,4 +59,8 @@ public class Utility {
 		}
 		return new Animation(frameDuration, frames);
 	}
+
+	public static String RegionToString(TextureRegion reg){
+		return ("[" + reg.getRegionX() + ", " + reg.getRegionY() + ", " + reg.getRegionWidth() + ", " + reg.getRegionHeight() + "]");
+	}
 }
