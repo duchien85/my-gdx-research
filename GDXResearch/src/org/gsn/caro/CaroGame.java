@@ -28,15 +28,8 @@ public class CaroGame extends Game implements IMercuryListenter {
 	@Override
 	public void create() {
 		CaroAssets.load();
-		setScreen(TEST);
-//		String imageURL = "http://s2.gonct.info/playlist/2011/04/05/1TztueYWS0It.jpg";
-//				
-//		FileHandle f = Gdx.files.external("a.png");		
-//		Debug.trace(f.exists() + " : " + f.path());
-//		ImageManager.DownloadFromUrl(imageURL, f.write(false));		
-//		File a = new File("gdx/img1.png");
-//		Debug.trace(a.getAbsolutePath());
-		//connect();
+		setScreen(BOARD);
+	//	connect();
 	}
 	
 	private void connect(){
@@ -47,7 +40,7 @@ public class CaroGame extends Game implements IMercuryListenter {
 		 client.addListener(this);
 		
 		 String s =
-		 "{\"params\":{\"username\":\"1F0189882EF93FC65236999C\"},\"_cmd\":\"login\",\"ext\":\"caro\"}";
+		 "{\"params\":{\"username\":\"1F0189883D9DEFB69040A8FD\"},\"_cmd\":\"login\",\"ext\":\"caro\"}";
 		 client.write(s);
 	}
 
