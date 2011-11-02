@@ -1,114 +1,76 @@
 package org.gsn.engine;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.InetAddress;
-import java.net.Socket;
 import java.nio.ByteBuffer;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 
 import org.json.JSONObject;
 
 public class MercuryClient {
-	public MercuryClient(String server, int port) {
-		this.server = server;
-		this.port = port;
-		listenerSet = new HashSet<IMercuryListenter>();
+	private Thread t;
+	private NioClient client;
+	private RspHandler handler;
+	public MercuryClient(String host, int port) {
+		// TODO Auto-generated constructor stub
+		try{
+		client = new NioClient(InetAddress.getByName(host), port);
+		t = new Thread(client);
+		handler = new RspHandler();
+		t.setDaemon(true);						
+		//handler.waitForResponse();
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	public void disconect(){
+		client.disconect();		
 	}
 
-	private String server;
-	private int port;
-	private Socket socket;
-	private boolean connected;
-	private Set<IMercuryListenter> listenerSet;
+	public void connect() {
+		// TODO Auto-generated method stub
+		t.start();
+	}
+	
 
-	// public void addListener(IMercuryListenter lis )
-
-	public void write(JSONObject s) {
-		write(s.toString());
+	public void addListener(IMercuryListenter caroGame) {
+		// TODO Auto-generated method stub
+		handler.setListener(caroGame);
+		
 	}
 
 	public void write(String s) {
+		// TODO Auto-generated method stub
+		Debug.trace("send : " + s);
+		byte[] bytes;
 		try {
-			Debug.trace("----- send : " + s);
-			byte[] bytes = s.getBytes("UTF-8");
+			bytes = s.getBytes("UTF-8");
 			ByteBuffer buffer = ByteBuffer.allocate(s.length() + 2);
 			buffer.putShort((short) bytes.length);
-			buffer.put(bytes);
-			socket.getOutputStream().write(buffer.array());
-			socket.getOutputStream().flush();
-		} catch (IOException e) {
+			buffer.put(bytes);			
+			client.send(buffer.array(), handler);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}								
+	}
+
+	public void write(JSONObject json) {
+		// TODO Auto-generated method stub
+		write(json.toString());
+	}
+	
+	public static void main1(String[] args){
+		try {			
+			NioClient client = new NioClient(InetAddress.getByName("www.google.com"), 80);
+			Thread t = new Thread(client);
+			//t.setDaemon(true);
+			t.start();
+			RspHandler handler = new RspHandler();
+			client.send("GET / HTTP/1.0\r\n\r\n".getBytes(), handler);
+			//handler.waitForResponse();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void removeAllListener() {
-		listenerSet.clear();
-	}
-
-	public void addListener(IMercuryListenter l) {
-		listenerSet.add(l);
-	}
-
-	public void removeListener(IMercuryListenter l) {
-		listenerSet.remove(l);
-	}
-
-	public void connect() {
-		Thread t = new Thread(new MyThread());
-		t.start();
-	}
-
-	public void disconnect() {
-		connected = false;
-	}
-
-	public boolean isConnected() {
-		if (socket == null)
-			return false;
-		return (socket.isConnected());
-	}
-
-	public void waitConnect() {
-		while (!isConnected())
-			;
-	}
-
-	class MyThread implements Runnable {
-		@Override
-		public void run() {
-			try {
-				connected = true;
-				InetAddress serverAddr = InetAddress.getByName(server);
-				socket = new Socket(serverAddr, port);
-				// String s =
-				// "{\"params\":{\"username\":\"1F01898806543ED2AAC9A104\"},\"_cmd\":\"login\",\"ext\":\"caro\"}";
-				// where you issue the commands
-				char[] b = new char[1000];
-				BufferedReader read = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-				while (connected) {
-					int n = read.read(b);
-					if (n > 0) {
-						String str = new String(b, 1, n - 2);
-						Debug.trace("receive : *" + str + "*");
-						Iterator<IMercuryListenter> it = listenerSet.iterator();
-						while (it.hasNext()) {
-							try {
-								IMercuryListenter l = it.next();
-								l.onReceive(str);
-							} catch (Exception e) {
-								Debug.e(e);
-							}
-						}
-					}
-				}
-				socket.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
 }

@@ -30,7 +30,7 @@ public class DesktopGDX {
 	 */
 	public static void main(String[] args) throws Exception  {
 		// TODO Auto-generated method stub
-		new JoglApplication(new CaroGame(), "Super Jumper", Constant.WIDTH, Constant.HEIGHT, false);		
+		new JoglApplication(new CaroGame(), "Caro", Constant.WIDTH, Constant.HEIGHT, false);		
 //		String imageURL = "http://s2.gonct.info/playlist/2011/04/05/1TztueYWS0It.jpg";
 //		byte[] b = ImageManager.download(imageURL);
 //		Pixmap pix = new Pixmap(b, 0, b.length);

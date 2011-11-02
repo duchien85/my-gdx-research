@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import org.gsn.engine.Debug;
 import org.gsn.engine.IMercuryListenter;
 import org.gsn.engine.MercuryClient;
+import org.gsn.engine.MyMercuryClient;
 import org.gsn.packet.CmdDefine;
 import org.gsn.packet.PacketFactory;
 import org.json.JSONArray;
@@ -28,20 +29,20 @@ public class CaroGame extends Game implements IMercuryListenter {
 	@Override
 	public void create() {
 		CaroAssets.load();
+		Constant.load();
 		setScreen(BOARD);
-	//	connect();
+		connect();
 	}
-	
-	private void connect(){
-		 client = new MercuryClient("120.138.65.104", 443);
-		 client.connect();
-		 client.waitConnect();
-		 client.addListener(this);
-		 client.addListener(this);
+
+	private void connect() {
+		client = new MercuryClient("120.138.65.104", 443);
+		client.connect();
 		
-		 String s =
-		 "{\"params\":{\"username\":\"1F0189883D9DEFB69040A8FD\"},\"_cmd\":\"login\",\"ext\":\"caro\"}";
-		 client.write(s);
+		client.addListener(this);
+		client.addListener(this);
+
+		String s = "{\"params\":{\"username\":\"1F018988152B8D9F3FBA393C\"},\"_cmd\":\"login\",\"ext\":\"caro\"}";
+		client.write(s);
 	}
 
 	public void setScreen(int id) {
@@ -68,8 +69,9 @@ public class CaroGame extends Game implements IMercuryListenter {
 		}
 	}
 
-	public void onReceive(String receive) {
+	public void processData(String receive) {
 		try {
+			Debug.trace("JSON receive: " + receive);
 			JSONObject json = new JSONObject(receive);
 			if (json.has("loginOK")) {
 				int login = json.getInt("loginOK");
@@ -131,6 +133,16 @@ public class CaroGame extends Game implements IMercuryListenter {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+
 	}
 
+	public void onReceive(String receive) {
+
+		String[] arr = receive.split("\0");
+		for (int i = 0; i < arr.length; i++) {
+			arr[i].trim();			
+			if (arr[i].length() > 0)
+				processData(arr[i]);
+		}
+	}
 }
