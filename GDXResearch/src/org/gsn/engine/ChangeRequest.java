@@ -1,5 +1,4 @@
 package org.gsn.engine;
-
 import java.nio.channels.SocketChannel;
 
 public class ChangeRequest {

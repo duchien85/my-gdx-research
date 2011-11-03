@@ -24,7 +24,7 @@ public class CaroGame extends Game implements IMercuryListenter {
 	private LobyScreen lobbyScreen;
 	private BoardScreen boardScreen;
 	private TestScreen testScreen;
-	MercuryClient client;
+	MyMercuryClient client;
 
 	@Override
 	public void create() {
@@ -35,13 +35,13 @@ public class CaroGame extends Game implements IMercuryListenter {
 	}
 
 	private void connect() {
-		client = new MercuryClient("120.138.65.104", 443);
+		client = new MyMercuryClient("120.138.65.104", 443);
 		client.connect();
 		
 		client.addListener(this);
 		client.addListener(this);
 
-		String s = "{\"params\":{\"username\":\"1F018988152B8D9F3FBA393C\"},\"_cmd\":\"login\",\"ext\":\"caro\"}";
+		String s = "{\"params\":{\"username\":\"1F018988A3DD2E829542684D\"},\"_cmd\":\"login\",\"ext\":\"caro\"}";
 		client.write(s);
 	}
 
