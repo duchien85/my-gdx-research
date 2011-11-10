@@ -329,7 +329,7 @@ public class BoardScreen extends InputAdapter implements Screen {
 
 	public boolean chessMove(int turn, int row, int col) {
 		if (logic.chessMove(turn, row, col)) {
-			CaroAssets.hitSound.play();
+			//CaroAssets.hitSound.play();
 			return true;
 		}
 		return false;
