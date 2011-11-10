@@ -30,8 +30,8 @@ public class CaroGame extends Game implements IMercuryListenter {
 	public void create() {
 		CaroAssets.load();
 		Constant.load();
-		setScreen(BOARD);
-		connect();
+		setScreen(TEST);
+		//connect();
 	}
 
 	private void connect() {

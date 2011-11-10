@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
- 
+
 
 
  
@@ -14,7 +14,7 @@ public class ImageManager {
  
         //private final String  PATH = "/data/data/com.helloandroid.imagedownloader/";  //put the downloaded file here
       
- 
+	
 	public static void DownloadFromUrl(String imageURL, String fileName) { // this
 																			// is
 																			// the

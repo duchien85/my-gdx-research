@@ -35,8 +35,8 @@ public class CaroAssets {
 	public static Sprite waitOpponent;
 	public static Sprite avatar;
 
-	public static Music music;
-	public static Sound hitSound;	
+//	public static Music music;
+//	public static Sound hitSound;	
 
 	public static BitmapFont font;
 	public static BitmapFont arialFont;
@@ -76,9 +76,9 @@ public class CaroAssets {
 
 	public static void loadSound() {
 		// music
-		music = Gdx.audio.newMusic(Gdx.files.internal("mdx/music.mp3"));
-		music.setLooping(true);
-		music.setVolume(0.5f);
-		hitSound = Gdx.audio.newSound(Gdx.files.internal("mdx/click.ogg"));
+//		music = Gdx.audio.newMusic(Gdx.files.internal("mdx/music.mp3"));
+//		music.setLooping(true);
+//		music.setVolume(0.5f);
+//		hitSound = Gdx.audio.newSound(Gdx.files.internal("mdx/click.ogg"));
 	}
 }
