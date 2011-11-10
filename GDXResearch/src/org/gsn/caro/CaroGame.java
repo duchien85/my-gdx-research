@@ -1,11 +1,7 @@
 package org.gsn.caro;
 
-import java.io.File;
-import java.io.OutputStream;
-
 import org.gsn.engine.Debug;
 import org.gsn.engine.IMercuryListenter;
-import org.gsn.engine.MercuryClient;
 import org.gsn.engine.MyMercuryClient;
 import org.gsn.packet.CmdDefine;
 import org.gsn.packet.PacketFactory;
@@ -15,7 +11,6 @@ import org.json.JSONObject;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 
 public class CaroGame extends Game implements IMercuryListenter {
 	final static int TEST = -1;

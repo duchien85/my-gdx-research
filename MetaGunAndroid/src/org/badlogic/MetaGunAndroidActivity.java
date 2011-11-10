@@ -1,15 +1,16 @@
 package org.badlogic;
 
-import java.net.InetAddress;
-
 import org.gsn.caro.CaroGame;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 
 public class MetaGunAndroidActivity extends AndroidApplication {
-
+	public static Game game;
 	public void onCreate(android.os.Bundle savedInstanceState) {
+		if (game == null)
+			game = new CaroGame();
 		super.onCreate(savedInstanceState);
-		initialize(new CaroGame(), false);
+		initialize(game, false);
 	}
 }
