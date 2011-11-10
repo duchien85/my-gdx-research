@@ -25,6 +25,8 @@ public class TestScreen extends InputAdapter implements Screen, OnActionComplete
 	@Override
 	public void render(float delta) {
 		// TODO Auto-generated method stub
+		if (time == 0)
+			Debug.trace("bat dau ne");
 		time += delta;
 		x = (Math.round(time * 20));
 		x = x % Gdx.graphics.getWidth();

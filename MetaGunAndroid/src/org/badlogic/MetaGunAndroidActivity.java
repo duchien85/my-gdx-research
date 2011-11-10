@@ -13,4 +13,12 @@ public class MetaGunAndroidActivity extends AndroidApplication {
 		super.onCreate(savedInstanceState);
 		initialize(game, false);
 	}
+	
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		game.dispose();
+		game = null;
+		super.onBackPressed();
+	}
 }
