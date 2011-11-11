@@ -3,6 +3,8 @@ package org.gsn.caro;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -10,6 +12,8 @@ import java.util.List;
 
 import org.gsn.engine.Debug;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Gdx2DPixmap;
@@ -21,12 +25,44 @@ public class ImageManager {
 		Debug.trace(" mu " + mu);
 		return (int) Math.pow(2, mu);
 	}
-
-	public static TextureRegion downloadToTexture(String imageURL, int width, int height) {
-		byte[] b = ImageManager.downloadImage(imageURL);
+	
+	public static void saveImage(String imageURL, OutputStream out){				
+		try {			
+			List<Byte> list = new ArrayList<Byte>();
+			URL url = new URL(imageURL);
+			URLConnection ucon = url.openConnection();
+			InputStream is = ucon.getInputStream();
+			saveImage(is, out);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public static void saveImage(InputStream in, OutputStream out){
+		byte[] b = new byte[1024];
+		try {
+			while (true){
+				int len = in.read(b);
+				if (len >= 0){
+					out.write(b, 0, len);
+				} else 
+					break;
+			}
+//			in.close();
+//			out.close();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+	}
+	
+	public static TextureRegion downloadToTexture(byte[] b, int width, int height) {
 		Gdx2DPixmap map;
 		try {
-			map = new Gdx2DPixmap(b, 0, b.length, 0);
+			map = new Gdx2DPixmap(b, 0, b.length, 0);		
 			Gdx2DPixmap myMap = new Gdx2DPixmap(findPower(width), findPower(height), Gdx2DPixmap.GDX2D_FORMAT_RGB888);
 			for (int x = 0; x < width; x++)
 				for (int y = 0; y < height; y++) {
@@ -45,7 +81,16 @@ public class ImageManager {
 			e.printStackTrace();
 			return null;
 		}
-
+	}
+	
+	public static TextureRegion downloadToTexture(String imageURL, int width, int height) {
+		byte[] b = ImageManager.downloadImage(imageURL);
+		return downloadToTexture(b, width, height);
+	}
+	
+	public static TextureRegion downloadToTexture(InputStream in, int width, int height) {
+		byte[] b = ImageManager.downloadImage(in);
+		return downloadToTexture(b, width, height);
 	}
 
 	public static TextureRegion downloadToTexture(String imageURL) {
