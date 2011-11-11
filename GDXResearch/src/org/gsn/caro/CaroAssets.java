@@ -3,6 +3,7 @@ package org.gsn.caro;
 import java.io.FileInputStream;
 
 import org.gsn.engine.Debug;
+import org.gsn.engine.TimeCounter;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
@@ -17,8 +18,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class CaroAssets {
-	static public TextureAtlas atlas;
-
+	static public TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("gdx/pack"));
 	public static Texture loadTexture(String file) {
 		return new Texture(Gdx.files.internal(file));
 	}
@@ -45,16 +45,21 @@ public class CaroAssets {
 	public static TextureRegion test;
 
 	public static void load() {
+		TimeCounter counter = new TimeCounter();
+		counter.count();
 		loadImage();
+		Debug.trace("time load image: " + counter.count());
 		loadSound();
+		Debug.trace("time sound image: " + counter.count());
 		loadFont();
+		Debug.trace("time font image: " + counter.count());
 	}
 
 	public static void loadImage() {
 		String imageURL = "http://s2.gonct.info/playlist/2011/04/05/1TztueYWS0It.jpg";
 		//test = ImageManager.downloadToTexture(imageURL, 32, 32);
 		
-		atlas = new TextureAtlas(Gdx.files.internal("gdx/pack"));
+		
 		background = atlas.createSprite("background");
 		avatar = atlas.createSprite("avatar");
 		cuoc1G = atlas.createSprite("cuoc1G");

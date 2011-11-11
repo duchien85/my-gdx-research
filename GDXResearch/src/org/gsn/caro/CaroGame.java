@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 
 public class CaroGame extends Game implements IMercuryListenter {
 	final static int TEST = -1;
@@ -19,14 +20,39 @@ public class CaroGame extends Game implements IMercuryListenter {
 	private LobyScreen lobbyScreen;
 	private BoardScreen boardScreen;
 	private TestScreen testScreen;
-	MyMercuryClient client;
-
+	MyMercuryClient client;	
+	CaroAssetManager manager; 
 	@Override
-	public void create() {
-		CaroAssets.load();
+	public void create() {	
+		Debug.trace("CREATE");
+		manager = CaroAssetManager.newInstance();
+		manager.create();		 	
 		Constant.load();
 		setScreen(TEST);
 		//connect();
+	}
+	
+	@Override
+	public void pause() {
+		// TODO Auto-generated method stub
+		Debug.trace("PAUSE");
+		manager.unloadAll();
+		super.pause();
+	}
+	
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+		Debug.trace("DISPOSE");
+		super.dispose();
+	}
+	
+	@Override
+	public void resume() {
+		// TODO Auto-generated method stub
+		Debug.trace("RESUME");
+		manager.loadAll();
+		super.resume();
 	}
 
 	private void connect() {

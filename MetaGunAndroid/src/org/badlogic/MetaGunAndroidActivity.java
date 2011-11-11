@@ -15,10 +15,10 @@ public class MetaGunAndroidActivity extends AndroidApplication {
 	}
 	
 	@Override
-	public void onBackPressed() {
+	public void finish(){
 		// TODO Auto-generated method stub
 		game.dispose();
 		game = null;
-		super.onBackPressed();
+		super.finish();
 	}
 }
