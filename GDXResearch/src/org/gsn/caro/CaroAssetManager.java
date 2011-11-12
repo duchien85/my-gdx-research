@@ -22,9 +22,6 @@ public class CaroAssetManager extends AssetManager implements AssetErrorListener
 		
 		load("gdx/img1.png", Texture.class);
 		load(pack_url, TextureAtlas.class);
-		
-		load("gdx/img2.png", Texture.class);
-		load(pack_url + "2", TextureAtlas.class);
 	}
 		
 	public void finishLoadingPack(String pack) {

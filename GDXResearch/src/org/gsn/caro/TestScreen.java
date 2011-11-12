@@ -32,17 +32,15 @@ public class TestScreen extends InputAdapter implements Screen, OnActionComplete
 			Debug.trace("failure");
 		
 		//ImageManager.saveImage("http://vnexpress.net/Files/Subject/3b/b0/4a/fa/130_MW_2011.jpg", Gdx.files.external(path + "trung.jpg").write(false));
-		//img = ImageManager.downloadToTexture(Gdx.files.external(path + "trung.jpg").read(), 100, 100);
-		CaroAssetManager.getInstance().finishLoadingPack("gdx/pack");
-		Debug.trace("load dc pack roi : " +  CaroAssetManager.getInstance().isLoaded("gdx/pack"));
-		Debug.trace("load dc avatar roi : " +  (CaroAssetManager.getInstance().getAvatarRegion() != null));
+		//img = ImageManager.downloadToTexture(Gdx.files.external(path + "trung.jpg").read(), 100, 100);		
 	}
 	float oldtime = -100;
 	float time = 0;
 	@Override
 	public void render(float delta) {
-		// TODO Auto-generated method stub		
+		// TODO Auto-generated method stub
 		CaroAssetManager.getInstance().update();
+		CaroAssetManager.getInstance().finishLoadingPack("gdx/pack");		
 		if (time == 0)
 			Debug.trace("bat dau ne");
 		time += delta;

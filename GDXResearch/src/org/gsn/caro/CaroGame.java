@@ -35,8 +35,7 @@ public class CaroGame extends Game implements IMercuryListenter {
 	@Override
 	public void pause() {
 		// TODO Auto-generated method stub
-		Debug.trace("PAUSE");
-		manager.unloadAll();
+		Debug.trace("PAUSE");		
 		super.pause();
 	}
 	
@@ -51,7 +50,7 @@ public class CaroGame extends Game implements IMercuryListenter {
 	public void resume() {
 		// TODO Auto-generated method stub
 		Debug.trace("RESUME");
-		manager.loadAll();
+		//manager.loadAll();
 		super.resume();
 	}
 
