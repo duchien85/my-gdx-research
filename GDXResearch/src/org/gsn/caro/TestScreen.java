@@ -40,7 +40,6 @@ public class TestScreen extends InputAdapter implements Screen, OnActionComplete
 	public void render(float delta) {
 		// TODO Auto-generated method stub
 		CaroAssetManager.getInstance().update();
-		CaroAssetManager.getInstance().finishLoadingPack("gdx/pack");		
 		if (time == 0)
 			Debug.trace("bat dau ne");
 		time += delta;
@@ -56,7 +55,7 @@ public class TestScreen extends InputAdapter implements Screen, OnActionComplete
 		Gdx.gl.glClear(GL11.GL_COLOR_BUFFER_BIT);
 		batcher.begin();
 		
-		batcher.draw(CaroAssetManager.getInstance().getAvatarRegion(), x, y);
+		//batcher.draw(CaroAssetManager.getInstance().getAvatarRegion(), x, y);
 		//batcher.draw(img, 0, 0);
 		batcher.end();
 	}
@@ -64,38 +63,40 @@ public class TestScreen extends InputAdapter implements Screen, OnActionComplete
 	@Override
 	public void resize(int width, int height) {
 		// TODO Auto-generated method stub
-		Debug.trace("resize");
+		Debug.trace("TEST SCREEN", "resize");
 	}
 
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
-		Debug.trace("show");
+		Debug.trace("TEST SCREEN", "show");
+		//CaroAssetManager.getInstance().finishLoadingPack(CaroAssetManager.pack_url);
 	}
 
 	@Override
 	public void hide() {
 		// TODO Auto-generated method stub
-		Debug.trace("hide");
+		Debug.trace("TEST SCREEN", "hide");
 	}
 
 	@Override
 	public void pause() {
 		// TODO Auto-generated method stub
-		Debug.trace("pause");
+		Debug.trace("TEST SCREEN", "pause");
 	}
 
 	@Override
 	public void resume() {
 		// TODO Auto-generated method stub
-		Debug.trace("resume");
+		Debug.trace("TEST SCREEN", "resume");
+		//CaroAssetManager.getInstance().finishLoadingPack(CaroAssetManager.pack_url);
 		//img = ImageManager.downloadToTexture(Gdx.files.external("trung.jpg").read(), 100, 100);
 	}
 
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
-		Debug.trace("dispose");
+		Debug.trace("TEST SCREEN", "dispose");
 	}
 
 	@Override

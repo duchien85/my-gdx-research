@@ -15,6 +15,13 @@ public class MetaGunAndroidActivity extends AndroidApplication {
 	}
 	
 	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		
+		super.onResume();
+	}
+	
+	@Override
 	public void finish(){
 		// TODO Auto-generated method stub
 		game.dispose();
