@@ -4,7 +4,9 @@ import org.gsn.engine.Debug;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetErrorListener;
+import com.badlogic.gdx.assets.AssetLoaderParameters;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.TextureLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
@@ -15,32 +17,57 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class CaroAssetManager extends AssetManager implements AssetErrorListener {	
-	private final String pack_url = "gdx/pack";
+	public static final String pack_url = "gdx/pack";
+	public static final String img1 = "gdx/img1.png";
 		
 	public synchronized void loadAll(){		
 		Debug.trace("load all");		
-		
-		load("gdx/img1.png", Texture.class);
-		load(pack_url, TextureAtlas.class);
+		AssetLoaderParameters<TextureAtlas> params = new AssetLoaderParameters<TextureAtlas>();
+		params.loadedCallback = new AssetLoaderParameters.LoadedCallback() {
+
+			@Override
+			public void finishedLoading(AssetManager assetManager, String fileName, Class type) {
+				// TODO Auto-generated method stub
+				Debug.trace("HAAAAAAAAAAAAAA");
+			}
+		};
+		AssetDescriptor as = new AssetDescriptor(pack_url, TextureAtlas.class, params);		
+		load(as);
 	}
 		
-	public void finishLoadingPack(String pack) {
+//	
+//	@Override
+//	public synchronized boolean update() {
+//		// TODO Auto-generated method stub
+//		//Debug.trace("--------updating");
+//		return super.update();
+//	}
+	
+	@Override
+	public synchronized <T> void load(String fileName, Class<T> type) {
 		// TODO Auto-generated method stub
-		while (!isLoaded(pack)){
-			update();
-		}
+		Debug.trace("--------loading : " + fileName);
+		super.load(fileName, type);
 	}
+	
+	@Override
+	public synchronized void unload(String fileName) {
+		// TODO Auto-generated method stub
+		Debug.trace("--------unloading : " + fileName);
+		if (super.isLoaded(fileName))
+			super.unload(fileName);
+	}	
 
 	
 	public synchronized void unloadAll() {
 		// TODO Auto-generated method stub
-		Debug.trace("unnnload all");
-		unload("gdx/img1.png");
+		Debug.trace("unnnload all");		
 		unload(pack_url);
 	}
 	
 	private CaroAssetManager(){
 		super();
+		create();
 	}	
 	
 	private static CaroAssetManager _instance = null;
@@ -53,6 +80,17 @@ public class CaroAssetManager extends AssetManager implements AssetErrorListener
 	public static CaroAssetManager newInstance(){		
 		_instance = new CaroAssetManager();
 		return _instance;
+	}
+		
+	public void finishLoadingPack(String name) {
+		// TODO Auto-generated method stub
+			
+		while (!isLoaded(name))		
+		{
+			update();			
+			Thread.yield();
+		}					
+		Debug.trace("Log ", " Texture loaded: " + isLoaded(name));
 	}
 	
 	public void create(){
