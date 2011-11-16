@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 
 public class Debug {
 	public static void trace(Object obj) {
+		//Gdx.app.log("log", obj.toString());
 		System.out.println(obj);
 	}
 	

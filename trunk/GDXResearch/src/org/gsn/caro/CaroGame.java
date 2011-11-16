@@ -25,7 +25,8 @@ public class CaroGame extends Game implements IMercuryListenter {
 	@Override
 	public void create() {	
 		Debug.trace("CREATE");
-		manager = CaroAssetManager.newInstance();		
+		manager = CaroAssetManager.newInstance();
+		manager.finishLoading();
 		Constant.load();
 		setScreen(TEST);
 		//connect();
@@ -48,7 +49,8 @@ public class CaroGame extends Game implements IMercuryListenter {
 	@Override
 	public void resume() {
 		// TODO Auto-generated method stub
-		Debug.trace("RESUME");		
+		Debug.trace("RESUME");
+		manager.finishLoading();
 		super.resume();		
 	}
 
