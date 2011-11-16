@@ -19,20 +19,13 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class CaroAssetManager extends AssetManager implements AssetErrorListener {	
 	public static final String pack_url = "gdx/pack";
 	public static final String img1 = "gdx/img1.png";
-		
+	com.badlogic.gdx.assets.loaders.TextureLoader.TextureParameter params;
 	public synchronized void loadAll(){		
 		Debug.trace("load all");		
-		AssetLoaderParameters<TextureAtlas> params = new AssetLoaderParameters<TextureAtlas>();
-		params.loadedCallback = new AssetLoaderParameters.LoadedCallback() {
-
-			@Override
-			public void finishedLoading(AssetManager assetManager, String fileName, Class type) {
-				// TODO Auto-generated method stub
-				Debug.trace("HAAAAAAAAAAAAAA");
-			}
-		};
-		AssetDescriptor as = new AssetDescriptor(pack_url, TextureAtlas.class, params);		
-		load(as);
+		params = new com.badlogic.gdx.assets.loaders.TextureLoader.TextureParameter();
+		params.loadedCallback = new MyLoadedCallBack();
+		AssetDescriptor as = new AssetDescriptor(img1, Texture.class, params);		
+		load(as);		
 	}
 		
 //	
@@ -46,18 +39,32 @@ public class CaroAssetManager extends AssetManager implements AssetErrorListener
 	@Override
 	public synchronized <T> void load(String fileName, Class<T> type) {
 		// TODO Auto-generated method stub
-		Debug.trace("--------loading : " + fileName);
+		Debug.trace("asset", "loading 2: " + fileName);
 		super.load(fileName, type);
+	}
+	
+	@Override
+	public synchronized void load(AssetDescriptor desc) {
+		// TODO Auto-generated method stub
+		Debug.trace("asset", "loading 1: " + desc.fileName);
+		super.load(desc);
+	}
+	
+	@Override
+	public synchronized <T> void load(String fileName, Class<T> type, AssetLoaderParameters<T> parameter) {
+		// TODO Auto-generated method stub
+		Debug.trace("asset", "loading 3: " + fileName);
+		super.load(fileName, type, parameter);
 	}
 	
 	@Override
 	public synchronized void unload(String fileName) {
 		// TODO Auto-generated method stub
-		Debug.trace("--------unloading : " + fileName);
-		if (super.isLoaded(fileName))
-			super.unload(fileName);
-	}	
-
+		Debug.trace("asset", "unloading : " + fileName);
+		Debug.trace("assets", "isLoaded " + fileName + " : " + isLoaded(fileName));
+		super.unload(fileName);
+	}
+		
 	
 	public synchronized void unloadAll() {
 		// TODO Auto-generated method stub
@@ -81,7 +88,16 @@ public class CaroAssetManager extends AssetManager implements AssetErrorListener
 		_instance = new CaroAssetManager();
 		return _instance;
 	}
-		
+	
+	@Override
+	public void finishLoading() {
+		// TODO Auto-generated method stub
+		while (!update()){
+			Debug.trace("update");
+			Thread.yield();
+		}
+	}
+	
 	public void finishLoadingPack(String name) {
 		// TODO Auto-generated method stub
 			
@@ -109,14 +125,24 @@ public class CaroAssetManager extends AssetManager implements AssetErrorListener
 		// TODO Auto-generated method stub
 		Gdx.app.error("AssetManagerTest", "couldn't load asset '" + fileName + "'", (Exception) throwable);
 	}
-		
 	
-	public TextureRegion getAvatarRegion(){
-		if (isLoaded(pack_url))
-			return get(pack_url, TextureAtlas.class).findRegion("avatar");
+	public Texture getAvatarRegion(){
+		if (isLoaded(img1)){
+			Texture t = get(img1, Texture.class);			
+			return t;
+		}
 		else {
 			//Debug.trace("unloaded ne");
 			return null;
 		}
 	}
+	
+//	public TextureRegion getAvatarRegion(){
+//		if (isLoaded(pack_url))
+//			return get(pack_url, TextureAtlas.class).findRegion("avatar");
+//		else {
+//			//Debug.trace("unloaded ne");
+//			return null;
+//		}
+//	}
 }
