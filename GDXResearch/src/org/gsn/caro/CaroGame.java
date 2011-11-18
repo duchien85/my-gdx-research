@@ -1,5 +1,7 @@
 package org.gsn.caro;
 
+import org.gsn.Ping;
+import org.gsn.Ping.IPingListener;
 import org.gsn.engine.Debug;
 import org.gsn.engine.IMercuryListenter;
 import org.gsn.engine.MyMercuryClient;
@@ -29,6 +31,16 @@ public class CaroGame extends Game implements IMercuryListenter {
 		manager.finishLoading();
 		Constant.load();
 		setScreen(TEST);
+		
+		Ping ping = new Ping("120.138.65.118", 443, new IPingListener() {
+			
+			@Override
+			public void onPing(long time) {
+				// TODO Auto-generated method stub
+				System.out.println("ping : " + time);
+			}
+		});
+		ping.loopPing(1);
 		//connect();
 	}
 	
