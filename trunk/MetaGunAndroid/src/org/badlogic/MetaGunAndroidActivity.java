@@ -1,5 +1,7 @@
 package org.badlogic;
 
+import org.gsn.Ping;
+import org.gsn.Ping.IPingListener;
 import org.gsn.caro.CaroGame;
 
 import com.badlogic.gdx.Game;
@@ -12,12 +14,12 @@ public class MetaGunAndroidActivity extends AndroidApplication {
 			game = new CaroGame();
 		super.onCreate(savedInstanceState);
 		initialize(game, false);
+		
 	}
 	
 	@Override
 	protected void onResume() {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub		
 		super.onResume();
 	}
 	

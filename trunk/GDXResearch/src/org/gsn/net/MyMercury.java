@@ -52,6 +52,7 @@ public class MyMercury implements Runnable {
 	public void send(String s) {
 		queue.add(s);
 	}
+		
 
 	public void processSelectionKey(SelectionKey selKey) throws IOException {
 		// Since the ready operations are cumulative,
@@ -202,7 +203,7 @@ public class MyMercury implements Runnable {
 	
 	public static void main(String[] args) {
 		System.out.println("chay...");
-		m = new MyMercury("120.138.65.104", 443, new IMercuryListener() {
+		m = new MyMercury("120.138.65.118", 443, new IMercuryListener() {
 
 			@Override
 			public void onReceived(String s) {
@@ -224,7 +225,7 @@ public class MyMercury implements Runnable {
 			public void onConnected() {
 				// TODO Auto-generated method stub
 				System.out.println("connect");
-				String s = "{\"params\":{\"username\":\"1F018988A3DD2E829542684D\"},\"_cmd\":\"login\",\"ext\":\"caro\"}";
+				String s = "{\"params\":{\"username\":\"1F018988F79F2897D5A40ED7\"},\"_cmd\":\"login\",\"ext\":\"caro\"}";
 				m.send(s);
 			}
 		});
