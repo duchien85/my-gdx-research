@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.gsn.asset.CaroAssetManager;
 import com.gsn.asset.FontManager;
 
-import engine.Debug;
+import engine.gdx.Debug;
 
 
 public class LobbyScreen extends InputAdapter implements Screen {

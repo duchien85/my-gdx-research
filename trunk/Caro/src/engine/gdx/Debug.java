@@ -1,4 +1,4 @@
-package engine;
+package engine.gdx;
 
 import com.badlogic.gdx.Gdx;
 
@@ -8,6 +8,9 @@ public class Debug {
 	}
 	
 	public static void trace(String tag, Object obj){
-		Gdx.app.log(tag, obj.toString());
+		if (tag.equals("OUT"))
+			System.out.println(obj);
+		else 
+			Gdx.app.log(tag, obj.toString());
 	}
 }
