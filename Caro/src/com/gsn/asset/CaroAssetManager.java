@@ -15,7 +15,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-import engine.Debug;
+import engine.gdx.Debug;
 
 public class CaroAssetManager extends AssetManager implements AssetErrorListener {	
 	public static final String pack_url = "gdx/pack";

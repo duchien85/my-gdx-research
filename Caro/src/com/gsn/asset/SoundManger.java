@@ -17,7 +17,7 @@ public class SoundManger {
 	}
 
 	public static void load(){
-		music = Gdx.audio.newMusic(Gdx.files.internal("mdx/music.mp3"));
+		music = Gdx.audio.newMusic(Gdx.files.internal("mdx/click.wav"));
 		music.setLooping(true);
 		music.setVolume(0.5f);		
 		hitSound = Gdx.audio.newSound(Gdx.files.internal("mdx/click.wav"));
