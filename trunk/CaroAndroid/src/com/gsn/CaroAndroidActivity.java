@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+import com.gsn.caro.CaroGame;
 
 public class CaroAndroidActivity extends AndroidApplication {
     /** Called when the activity is first created. */
