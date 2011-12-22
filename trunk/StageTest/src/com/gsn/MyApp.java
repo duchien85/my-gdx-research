@@ -2,16 +2,20 @@ package com.gsn;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.backends.jogl.JoglApplication;
+import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actors.Image;
 import com.badlogic.gdx.scenes.scene2d.actors.Label;
 
-public class MyApp implements ApplicationListener {
+public class MyApp implements ApplicationListener{
 
 	/**
 	 * @param args
@@ -21,32 +25,19 @@ public class MyApp implements ApplicationListener {
 		new JoglApplication(new MyApp(), "Stage Test", 480, 320, false);
 		//new JoglApplication(new MyApp(), "Stage Test", 240, 160, false);
 	}
-	Texture texture;
-	BitmapFont font;
-	Stage stage;
+	
+	static final String tag = "MyApp";	
+	Stage stage;	
 	@Override
 	public void create() {
 		// TODO Auto-generated method stub
-		stage = new Stage(480, 320, true);
-		
-		texture = new Texture(Gdx.files.internal("data/badlogicsmall.jpg"));
-		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		font = new BitmapFont();								
-		
-		Group group = new Group("group");
-		
-		Label fps = new Label("fps", font, "fps: 0");
-		fps.x = 10;
-		fps.y = 30;
-		fps.color.set(0, 1, 0, 1);
-		group.addActor(fps);
-		
-		Image img = new Image("badicon", texture);
-		img.x = 100;
-		img.y = 200;
-		group.addActor(img);
-		
-		stage.addActor(group);
+		TextureAsset.load();			
+		setStage(new MyStage(480, 320, true));
+	}
+	
+	public void setStage(Stage stage){
+		this.stage = stage;
+		Gdx.input.setInputProcessor(this.stage);
 	}
 
 	@Override
@@ -59,8 +50,12 @@ public class MyApp implements ApplicationListener {
 	@Override
 	public void render() {
 		// TODO Auto-generated method stub
-		stage.act(Gdx.graphics.getDeltaTime());
-		stage.draw();
+		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+	//	Gdx.gl.glClearColor(1.0f, 0, 0, 1);
+		if (stage != null){
+			stage.act(Gdx.graphics.getDeltaTime());
+			stage.draw();
+		}
 	}
 
 	@Override
@@ -80,5 +75,4 @@ public class MyApp implements ApplicationListener {
 		// TODO Auto-generated method stub
 
 	}
-
 }
